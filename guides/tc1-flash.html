@@ -1,20 +1,20 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EMW3031：J-Link 首次安装与恢复"><title>刷机 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html" aria-current="page">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>TC1 刷机（A1 硬件版本）</h1>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EMW3031：J-Link 首次安装与恢复"><title>刷机 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html" aria-current="page">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="tc1-刷机a1-硬件版本">TC1 刷机（A1 硬件版本）</h1>
 <p><strong>仅适用于硬件版本为 A1 的 TC1 智能排插</strong>，模块为 EMW3031。不支持 TC1 A2 硬件。</p>
 <p>先阅读<a href="flash-prep.html">刷机前准备</a>，本页只写 TC1 特有的步骤。</p>
-<h2>工具与拆机</h2>
+<h2 id="工具与拆机">工具与拆机</h2>
 <p><strong>工具：</strong> Windows 电脑、支持 SWD 的 J-Link、<a href="https://www.segger.com/downloads/jlink/">SEGGER J-Link 驱动</a>、FlashPlus、独立 3.3V 电源、导线、合适的螺丝刀和焊接工具。</p>
 <p>FlashPlus 使用 Marvell 的 EMW3031 烧录配置。可从<a href="sources.html">资源来源</a>下载 FlashPlus；<a href="https://github.com/IoTDevice/phicomm_tc1_a1/blob/master/工具和文档/EMW3031说明文档_flashplus.pdf">EMW3031 / FlashPlus 工具说明镜像</a>包含工具配置与 Flash 布局。</p>
 <p><img alt="FlashPlus 芯片与 Flash 配置（工具说明 PDF 配图裁剪）" src="assets/images/flashplus-config.png" /></p>
 <p><strong>拆机：</strong> 拆开底部防水垫，拧下螺丝；轻敲底下中部，直到外壳脱开。取出电路板后<strong>确认模块为 EMW3031</strong>。</p>
-<h2>接线：模块飞线或工厂测试点</h2>
+<h2 id="接线模块飞线或工厂测试点">接线：模块飞线或工厂测试点</h2>
 <p>两种接法使用同一套 SWD 信号，任选一种，不必同时连接。</p>
-<h3>方法一：在模块焊盘飞线</h3>
+<h3 id="方法一在模块焊盘飞线">方法一：在模块焊盘飞线</h3>
 <p>按下图的 <strong>3.3V、GND、DIO、CLK</strong> 标记焊接导线。图片方向以标签和天线位置为准；不要翻面后直接套用左右位置。</p>
 <p><img alt="TC1 A1 的 EMW3031 模块刷机点位：3.3V、GND、DIO、CLK" src="assets/images/tc1-a1-module.png" /></p>
-<h3>方法二：使用主板工厂测试点（更方便）</h3>
+<h3 id="方法二使用主板工厂测试点更方便">方法二：使用主板工厂测试点（更方便）</h3>
 <p>不用在模块边缘焊盘上飞线，可使用下图红框内主板的 <strong>3V3、DIO、CLK、GND</strong> 测试点连接下载器和电源。图中文字方向是倒置的，必须逐个核对丝印；使用探针、夹具或焊线保持可靠接触，不要在擦写中移动。</p>
 <p><img alt="TC1 A1 主板工厂刷机测试点，红框内为 3V3、DIO、CLK、GND" src="assets/images/tc1-a1-test-points.png" /></p>
-<h3>信号对应关系</h3>
+<h3 id="信号对应关系">信号对应关系</h3>
 <p>接线时按<strong>主板丝印和模块引脚</strong>核对，不按线的颜色判断。</p>
 <table>
 <thead>
@@ -51,7 +51,7 @@
 <blockquote>
 <p><strong>VTref 是电压检测输入，不是 3.3V 电源输出。</strong> 标准 J-Link 的 19 针输出为 5V，<strong>不连接模块</strong>。小型下载器的排针布局可能不同，应按其说明中的 SWCLK、SWDIO、GND、VTref 信号对应连接。</p>
 </blockquote>
-<h2>烧录步骤</h2>
+<h2 id="烧录步骤">烧录步骤</h2>
 <ol>
 <li><strong>断开排插市电</strong>，接好下载线和独立 3.3V 电源，连接 J-Link 到电脑，打开 FlashPlus。</li>
 <li>设置 <strong>Chip = 88MW30X</strong>、<strong>Interface = JLINK</strong>；Flash 选 <strong>External Flash</strong>，接口选 <strong>QSPI</strong>，Type 选 <strong>Other</strong>。</li>
@@ -69,7 +69,7 @@
 <ol>
 <li>装回外壳后正常上电，连接 <code>TC1-AP-&lt;MAC后六位&gt;</code>，访问 <code>http://192.168.0.1/</code> 配网。</li>
 </ol>
-<h2>排错</h2>
+<h2 id="排错">排错</h2>
 <table>
 <thead>
 <tr>
@@ -88,10 +88,10 @@
 </tr>
 </tbody>
 </table>
-<h2>恢复原厂</h2>
+<h2 id="恢复原厂">恢复原厂</h2>
 <p>可使用<strong>同一台设备</strong>的完整备份，从 Flash 地址 <code>0</code> 写回并校验。</p>
 <blockquote>
 <p><strong>没有本机备份时，不要整片擦除，或写入他人的设备参数。</strong></p>
 </blockquote>
-<h2>之后</h2>
+<h2 id="之后">之后</h2>
 <p>安装完成后按<a href="quick-start.html#首次配网">快速开始</a>配网，日常操作见 <a href="tc1-guide.html">TC1 功能与操作</a>。后续升级用网页 OTA，见<a href="firmware-update.html">固件更新</a>。</p></article><div class="guide-pager"><a href="tc1-guide.html">上一页<b>功能与操作</b></a><a class="next" href="m1-guide.html">下一页<b>功能与操作</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

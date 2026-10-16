@@ -1,6 +1,6 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MQTT 模式、管理平台与 A1 × M1 联动"><title>MQTT 与联动 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html" aria-current="page">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>MQTT 与联动</h1>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MQTT 模式、管理平台与 A1 × M1 联动"><title>MQTT 与联动 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html" aria-current="page">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="mqtt-与联动">MQTT 与联动</h1>
 <p>设备可以只在本局域网使用，也可以接入 MQTT，从而连接 Home Assistant 或 MQTT 远程集中管理平台。这一步完全可选，不做任何配置时设备功能不受影响。</p>
-<h2>选择 MQTT 模式</h2>
+<h2 id="选择-mqtt-模式">选择 MQTT 模式</h2>
 <p>在设备网页的 MQTT 设置中填写 Broker 地址、端口、用户名和密码。三款设备的协议模式不同：</p>
 <table>
 <thead>
@@ -25,26 +25,26 @@
 <blockquote>
 <p>固件主题前缀本身<strong>不构成权限隔离</strong>。TMCP 的账户隔离仍需 Broker 的 ACL 配合。</p>
 </blockquote>
-<h2>接入 Home Assistant</h2>
+<h2 id="接入-home-assistant">接入 Home Assistant</h2>
 <p>设备发布 Home Assistant 的 MQTT 发现配置，HA 会自动发现实体。M1 和 A1 可以只读订阅 Home Assistant 的启动通知，因此 HA 重启后刷新更快。</p>
 <p>在 HA 中配置好 MQTT 集成并指向同一 Broker 后，设备的读数与开关会作为实体出现。</p>
-<h2>A1 与 M1 联动</h2>
+<h2 id="a1-与-m1-联动">A1 与 M1 联动</h2>
 <p>M1 只检测、上报并应答<strong>已授权</strong>的 A1，不主动控制净化器。规则、聚合、风机、灯环和组控制全部集中在 A1 端。</p>
-<h3>绑定步骤</h3>
+<h3 id="绑定步骤">绑定步骤</h3>
 <ol>
 <li><strong>在 M1 端</strong>：进入绑定设置，添加 <code>A1_MAC:M1_MAC</code> 配对标识（两侧均为 12 位小写十六进制）。</li>
 <li><strong>在 A1 端</strong>：配置 M1 成员与联动规则。</li>
 <li>检查双方网络、MQTT 配置及绑定状态，确认平均读数有效后启用联动。</li>
 </ol>
 <p>每个标识只授权一个 A1 查询一个 M1；添加其他 M1 不改变已有标识。M1 粘贴许可列表，最多八个并去重——不再需要填写 IP、令牌、恢复间隔或联动规则。</p>
-<h3>运行方式</h3>
+<h3 id="运行方式">运行方式</h3>
 <p>A1 发起会话初始化、探测和查询，优先走局域网，失败回退 MQTT。M1 只被动响应已许可 A1 的 <code>bind</code>、<code>probe</code>、<code>read</code> 请求。会话令牌仅存在 RAM 中；M1 重启后 A1 会周期性重新初始化会话，<strong>不需要用户重填令牌</strong>。</p>
 <p>A1 对已绑定且 15 秒内有效的 M1 数据计算实时算术平均；没有有效数据时读数为 <code>null</code>。</p>
 <p>联动开关、阈值、风速策略、防抖与最短切换间隔都在 A1 设置中。M1 会拒绝联动通道的配置读写、解绑和传感器推送。</p>
 <blockquote>
 <p><strong>双方需要一起升级。</strong> M1/A1 不保留早期专用协议兼容层。</p>
 </blockquote>
-<h2>MQTT 远程集中管理平台</h2>
+<h2 id="mqtt-远程集中管理平台">MQTT 远程集中管理平台</h2>
 <p><a href="https://github.com/phicomm-io/phicomm-community-mqtt">phicomm-community-mqtt</a> 提供账号登录、设备列表、MQTT 连接与 Legacy / TMCP 设备管理，支持批量管理设备。</p>
 <ul>
 <li>网站登录和 MQTT 使用同一用户名、密码；登录后自动连接 MQTT，断网后自动重连。</li>

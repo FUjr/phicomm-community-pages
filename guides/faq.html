@@ -1,5 +1,5 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="连接状态、灯语总则与常见问题"><title>故障排查 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html" aria-current="page">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>故障排查</h1>
-<h2>先看连接状态指示灯</h2>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="连接状态、灯语总则与常见问题"><title>故障排查 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html" aria-current="page">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="故障排查">故障排查</h1>
+<h2 id="先看连接状态指示灯">先看连接状态指示灯</h2>
 <p>连接异常提示<strong>优先于</strong>正常业务灯光。三款设备用不同的方式表达同一套状态优先级：</p>
 <p><strong>状态优先级：未配网 &gt; Wi-Fi 断线 &gt; MQTT 已配置但未就绪 &gt; 正常</strong></p>
 <table>
@@ -37,24 +37,24 @@
 <blockquote>
 <p><strong>未配置 MQTT 不算 MQTT 连接故障。</strong> 只有已经配置了 MQTT 但连接失败时才会提示。</p>
 </blockquote>
-<h2>常见问题</h2>
-<h3>设备连不上，指示灯在快闪</h3>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="设备连不上指示灯在快闪">设备连不上，指示灯在快闪</h3>
 <p>Wi-Fi 未连接。确认路由器工作正常、密码正确，并检查是否超出了信号范围。可以按住按键重置网络后重新配网。</p>
-<h3>设备联网了，但灯在慢闪</h3>
+<h3 id="设备联网了但灯在慢闪">设备联网了，但灯在慢闪</h3>
 <p>已经配置的 MQTT 连接异常。检查 Broker 地址、端口、用户名和密码，以及服务器是否可达。<strong>如果没有配置 MQTT，这不是故障。</strong></p>
-<h3>找不到设备的 IP 地址</h3>
+<h3 id="找不到设备的-ip-地址">找不到设备的 IP 地址</h3>
 <p>在路由器的 DHCP 客户端列表中查找设备 MAC 对应的地址。配网热点只在未配置 Wi-Fi 时开启；已经联网的设备不会再开热点。</p>
-<h3>忘记网页密码</h3>
+<h3 id="忘记网页密码">忘记网页密码</h3>
 <p>按住按键恢复：<strong>按住 5 秒至不足 10 秒后松手重置网络；按住至少 10 秒后松手恢复出厂设置。</strong> 操作前确认可以重新配网，出厂恢复会清除用户设置。</p>
 <p>TC1 主按键及 A1 Wi-Fi 键保留这两个恢复手势。M1 使用原面板长按事件，清除 Wi-Fi 和网页密码——具体步骤见 <a href="a1-m1-flash.html">M1 刷机</a>，不要套用 A1/TC1 的自定义按键设置。</p>
-<h3>按键没有反应</h3>
+<h3 id="按键没有反应">按键没有反应</h3>
 <ul>
 <li>童锁会阻止自定义按键动作，先确认童锁已关闭。</li>
 <li>按键动作在<strong>松手后</strong>才识别，恢复操作不会在仍按住时执行。</li>
 <li><strong>5 秒及以上是保留区间</strong>，不能作为自定义长按。</li>
 <li>连击需要等连击间隔结束后才执行。</li>
 </ul>
-<h3>A1 联动不工作</h3>
+<h3 id="a1-联动不工作">A1 联动不工作</h3>
 <p>按顺序检查：</p>
 <ol>
 <li>M1 的绑定设置中是否已添加 <code>A1_MAC:M1_MAC</code> 配对标识。</li>
@@ -62,14 +62,14 @@
 <li>双方网络与 MQTT 配置是否正常。</li>
 <li>平均读数是否有效（无有效数据时读数为 <code>null</code>）。</li>
 </ol>
-<h3>升级失败</h3>
+<h3 id="升级失败">升级失败</h3>
 <p>升级过程中必须保持供电。若网页仍可访问，检查文件和网络后重试；若设备无法启动，按对应型号的刷机文档用下载器恢复：<a href="tc1-flash.html">TC1</a> · <a href="a1-m1-flash.html">M1</a> · <a href="a1-m1-flash.html">A1</a>。</p>
-<h3>配置没有保存</h3>
+<h3 id="配置没有保存">配置没有保存</h3>
 <p>部分网络修改会断开连接，需要重新访问设备网页确认。也可以检查设备是否在保存过程中断电。</p>
-<h2>恢复出厂设置的影响</h2>
+<h2 id="恢复出厂设置的影响">恢复出厂设置的影响</h2>
 <p>恢复出厂会清除用户设置。TC1 完整重置保留六路默认开启。恢复后需要重新配网。</p>
 <p><strong>恢复操作前请确认你能够重新配网</strong>（知道 Wi-Fi 密码、设备在可覆盖范围内）。</p>
-<h2>还没解决？</h2>
+<h2 id="还没解决">还没解决？</h2>
 <ul>
 <li>查阅对应型号的操作文档：<a href="tc1-guide.html">TC1</a> · <a href="m1-guide.html">M1</a> · <a href="a1-guide.html">A1</a></li>
 <li>在 <a href="https://github.com/phicomm-io/phicomm-community-firmware/issues">固件仓库 Issues</a> 中搜索或提问，并附上型号、固件版本和复现步骤</li>

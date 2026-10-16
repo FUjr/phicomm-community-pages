@@ -1,13 +1,13 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="风机、灯环、夜间模式与联动"><title>功能与操作 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html" aria-current="page">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>A1 空气净化器 功能与操作</h1>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="风机、灯环、夜间模式与联动"><title>功能与操作 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html" aria-current="page">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="a1-空气净化器-功能与操作">A1 空气净化器 功能与操作</h1>
 <p>A1 固件提供风机调速、灯环、童锁、夜间模式，以及与 M1 空气检测仪的自动联动。本文介绍安装完成后的日常操作；首次安装见 <a href="a1-m1-flash.html">A1 刷机</a>。</p>
-<h2>风机与开关</h2>
+<h2 id="风机与开关">风机与开关</h2>
 <p>首页提供电源开关与风机档位控制。</p>
 <ul>
 <li><strong>电源</strong>：开启或关闭净化器。</li>
 <li><strong>风机档位</strong>：手动选择风速。</li>
 <li><strong>自动</strong>：按 M1 的读数与联动规则自动调整。</li>
 </ul>
-<h2>灯环</h2>
+<h2 id="灯环">灯环</h2>
 <p>灯环呈现空气状态、连接进度和操作反馈。</p>
 <table>
 <thead>
@@ -32,12 +32,12 @@
 </tbody>
 </table>
 <p><strong>连接异常提示优先于业务灯光</strong>：A1 在业务灯效渲染后再覆盖故障灯，并服从夜间亮度上限。连接正常时归还业务灯控制权。灯语规则见<a href="faq.html#先看连接状态指示灯">故障排查</a>。</p>
-<h2>童锁与夜间模式</h2>
+<h2 id="童锁与夜间模式">童锁与夜间模式</h2>
 <ul>
 <li><strong>童锁</strong>：阻止自定义按键动作，避免误触。</li>
 <li><strong>夜间模式</strong>：在设定时段内降低亮度。夜间时段若结束时间早于开始时间，表示跨午夜。</li>
 </ul>
-<h2>与 M1 联动</h2>
+<h2 id="与-m1-联动">与 M1 联动</h2>
 <p><strong>联动配置集中在净化器端</strong>。M1 只负责检测和应答。</p>
 <p>在 A1 中：</p>
 <ol>
@@ -50,7 +50,7 @@
 <blockquote>
 <p>双方需要一起升级。完整绑定步骤见 <a href="mqtt-link.html#a1-与-m1-联动">MQTT 与联动</a>。</p>
 </blockquote>
-<h2>按键与恢复</h2>
+<h2 id="按键与恢复">按键与恢复</h2>
 <p>A1 有两个按键：<strong>功能键</strong>和 <strong>Wi-Fi 键</strong>。默认功能键单击切换风机。</p>
 <p>自定义按键映射支持：</p>
 <ul>
@@ -59,7 +59,7 @@
 <li><strong>5 秒及以上是保留区间</strong>，不能作为自定义长按。</li>
 </ul>
 <p>童锁会阻止自定义按键动作。相同的连续映射会折叠显示。</p>
-<h3>恢复手势</h3>
+<h3 id="恢复手势">恢复手势</h3>
 <p><strong>A1 Wi-Fi 键</strong>保留恢复手势，在<strong>松手时</strong>执行：</p>
 <table>
 <thead>
@@ -84,5 +84,5 @@
 <p>操作前确认可以重新配网。出厂恢复会清除用户设置。</p>
 </blockquote>
 <p>A1 的 WebUI 也提供完整重置。</p>
-<h2>MQTT</h2>
-<p>A1 固定使用 <strong>TMCP（v2）</strong> 主题，不提供 Legacy 模式选择。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p></article><div class="guide-pager"><a href="m1-guide.html">上一页<b>功能与操作</b></a><a class="next" href="build-deps.html">下一页<b>构建依赖</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
+<h2 id="mqtt">MQTT</h2>
+<p>A1 固定使用 <strong>TMCP（v2）</strong> 主题，不提供 Legacy 模式选择。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p></article><div class="guide-pager"><a href="a1-m1-flash.html">上一页<b>刷机：J-Link / Bootloader</b></a><a class="next" href="build-deps.html">下一页<b>构建依赖</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

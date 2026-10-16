@@ -1,6 +1,6 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="六路开关、计量、童锁、定时与按键"><title>功能与操作 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html" aria-current="page">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>TC1 功能与操作</h1>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="六路开关、计量、童锁、定时与按键"><title>功能与操作 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html" aria-current="page">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="tc1-功能与操作">TC1 功能与操作</h1>
 <p>TC1 智能排插固件提供六路插座开关、计量、童锁、指示灯和定时任务。本文介绍安装完成后的日常操作；首次安装见 <a href="tc1-flash.html">TC1 刷机</a>。</p>
-<h2>首页与插座控制</h2>
+<h2 id="首页与插座控制">首页与插座控制</h2>
 <p>首页显示六路插座状态与总开关。每路插座可以单独开关，也可以用总开关一次控制全部。</p>
 <table>
 <thead>
@@ -25,7 +25,7 @@
 </tbody>
 </table>
 <p>插座名称可以在网页中修改，设置会保存到设备。</p>
-<h2>计量与统计</h2>
+<h2 id="计量与统计">计量与统计</h2>
 <p>TC1 提供用电计量与统计信息：</p>
 <ul>
 <li><strong>实时功率</strong>：当前总功率。</li>
@@ -35,10 +35,10 @@
 <li><strong>上报间隔</strong>：计量数据的上报周期可设置。</li>
 </ul>
 <p>功率读数会应用设备侧的校准系数。若读数与独立计量设备存在固定偏差，可在设置中调整系数；建议先用稳定负载对比后再修改。</p>
-<h2>指示灯</h2>
+<h2 id="指示灯">指示灯</h2>
 <p>TC1 使用指示灯呈现连接状态。<strong>连接正常后恢复业务指示灯设置</strong>，即连接异常提示优先于业务灯光。</p>
 <p>指示灯可以按设置在业务状态下关闭或保持。连接状态的灯语规则是统一的，见<a href="faq.html#先看连接状态指示灯">故障排查</a>。</p>
-<h2>定时任务</h2>
+<h2 id="定时任务">定时任务</h2>
 <p>定时任务使用设备时区。设置 NTP 和时区后，确认时间已同步，再启用任务。</p>
 <ul>
 <li>支持<strong>按周</strong>或<strong>按日期</strong>执行的任务。</li>
@@ -46,7 +46,7 @@
 <li>设备支持的任务条目有上限，列表分批加载。</li>
 </ul>
 <p>详细的时间与定时说明见下。</p>
-<h2>时间与时区</h2>
+<h2 id="时间与时区">时间与时区</h2>
 <p>定时任务依赖准确的设备时间：</p>
 <ol>
 <li>设置 NTP 服务器地址。</li>
@@ -54,7 +54,7 @@
 <li>确认时间已经同步。</li>
 </ol>
 <p><strong>夜间时段若结束时间早于开始时间，表示跨午夜。</strong></p>
-<h2>按键与恢复</h2>
+<h2 id="按键与恢复">按键与恢复</h2>
 <p>TC1 支持自定义按键映射：</p>
 <ul>
 <li><strong>连击</strong>：1–30 次，连击间隔结束后才执行动作。</li>
@@ -62,7 +62,7 @@
 <li><strong>5 秒及以上是保留区间</strong>，不能作为自定义长按。</li>
 </ul>
 <p>TC1 <strong>没有默认的自定义按键动作</strong>，需要自行配置。童锁会阻止自定义按键动作。可在按键设置中查看、修改和删除映射；相同的连续映射会折叠显示。</p>
-<h3>恢复手势</h3>
+<h3 id="恢复手势">恢复手势</h3>
 <p>TC1 主按键保留恢复手势，在<strong>松手时</strong>执行：</p>
 <table>
 <thead>
@@ -87,5 +87,5 @@
 <p>操作前确认可以重新配网。出厂恢复会清除用户设置；<strong>TC1 完整重置保留六路默认开启</strong>。</p>
 </blockquote>
 <p>恢复手势绕过童锁，普通物理动作受童锁约束。</p>
-<h2>MQTT</h2>
+<h2 id="mqtt">MQTT</h2>
 <p>TC1 保留 <strong>Legacy（v1）</strong> 与 <strong>TMCP（v2）</strong> 两种协议模式，首次配置 MQTT 时默认 TMCP。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p></article><div class="guide-pager"><a href="faq.html">上一页<b>故障排查</b></a><a class="next" href="tc1-flash.html">下一页<b>刷机</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
