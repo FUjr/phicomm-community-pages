@@ -1,0 +1,48 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="静态前端托管、独立后端与 MQTT 连接"><title>IotCloud 部署 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="iotcloud-deploy.html" aria-current="page">IotCloud 部署</a><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1 id="iotcloud-部署">IotCloud 部署</h1>
+<p><a href="https://phicomm-io.github.io/iotcloud/">打开本站 IotCloud</a> · <a href="https://github.com/phicomm-io/phicomm-community-frontend">前端源码与发布</a> · <a href="https://github.com/phicomm-io/phicomm-community-mqtt#本地初始化">后端与 Broker 部署</a></p>
+<h2 id="选择部署方式">选择部署方式</h2>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直接使用本站前端</td>
+<td><a href="https://phicomm-io.github.io/iotcloud/">打开 IotCloud</a>，在登录页的“服务器设置”选择自己的后端</td>
+</tr>
+<tr>
+<td>只托管前端到 GitHub Pages 或其他静态服务</td>
+<td><a href="https://github.com/phicomm-io/phicomm-community-frontend#iotcloud-静态部署与-web-app">前端静态部署说明</a></td>
+</tr>
+<tr>
+<td>自建账号、设备管理和 MQTT Broker</td>
+<td><a href="https://github.com/phicomm-io/phicomm-community-mqtt#本地初始化">平台部署说明</a></td>
+</tr>
+<tr>
+<td>前端与后端使用不同域名</td>
+<td><a href="https://github.com/phicomm-io/phicomm-community-mqtt#独立静态前端iotcloud">跨域后端配置</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="静态前端">静态前端</h2>
+<p>从前端仓库的 <a href="https://github.com/phicomm-io/phicomm-community-frontend/releases">Releases</a> 下载所需版本的 <code>frontend.tar.gz</code>，按发布中的 <code>SHA256SUMS</code> 校验，解压后将 <code>platform/</code> 的内容作为静态网站发布。GitHub Pages 的项目子路径也可使用。</p>
+<p>在登录页展开“服务器设置”，填写后端 HTTPS 根地址（不带 <code>/api</code>）和 MQTT WebSocket 地址。也可在发布前编辑网站根目录的 <code>config.json</code>：</p>
+<pre><code class="language-json">{
+  &quot;apiOrigin&quot;: &quot;https://api.example.com&quot;,
+  &quot;mqttWS&quot;: &quot;wss://mqtt.example.com/mqtt&quot;
+}
+</code></pre>
+<p>配置中只放公开地址，不放账号、密码或令牌。浏览器保存的服务器设置优先于网站默认值。</p>
+<h2 id="配套后端与-mqtt">配套后端与 MQTT</h2>
+<p>按<a href="https://github.com/phicomm-io/phicomm-community-mqtt#本地初始化">平台部署说明</a>初始化后端和 Broker，再配置公网 HTTPS 与 WSS。静态托管只承载网页；账号服务、设备同步和 MQTT Broker 仍需要运行服务端。</p>
+<p>前后端跨域时，在后端 <code>backend/config.yaml</code> 中允许前端的准确来源，例如使用本站前端时：</p>
+<pre><code class="language-yaml">allowed_origins:
+  - https://phicomm-io.github.io
+</code></pre>
+<p>来源只包含协议和域名（有非默认端口时包含端口），不带 <code>/iotcloud/</code> 路径或末尾斜线；<code>public_url</code> 仍填写后端自己的公网地址。只添加自己信任的前端来源。</p>
+<p>平台账号模式应连接与该后端配套的 Broker；连接其他 Broker 时使用访客模式。HTTPS 网页需要使用 WSS。设备固件中的 MQTT Host 填写设备可访问的 Broker 主机名和对应端口，不要填写网页地址或 WSS 路径。前端域名与 MQTT Host 不同时，页面会提醒检查连接设置。</p>
+<h2 id="安装为-web-app">安装为 Web App</h2>
+<p>使用浏览器的“安装应用”或“添加到主屏幕”安装 IotCloud。首次联网后会缓存应用界面；离线可打开页面，但登录、同步与设备控制仍需要网络。发现新版本后，按更新提示确认即可切换。</p></article><div class="guide-pager"><a href="a1-guide.html">上一页<b>功能与操作</b></a><a class="next" href="build-deps.html">下一页<b>构建依赖</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
