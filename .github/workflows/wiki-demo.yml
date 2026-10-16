@@ -49,12 +49,16 @@ jobs:
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'schedule' || steps.release.outputs.tag != ''
       - name: Stage public site only
+        if: github.event_name != 'schedule' || steps.release.outputs.tag != ''
         run: |
           mkdir "$RUNNER_TEMP/public-site"
           cp -a index.html style.css site.js theme.js releases.js .nojekyll demos guides releases "$RUNNER_TEMP/public-site/"
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'schedule' || steps.release.outputs.tag != ''
         with:
           path: ${{ runner.temp }}/public-site
       - uses: actions/deploy-pages@v4
+        if: github.event_name != 'schedule' || steps.release.outputs.tag != ''
         id: deployment
