@@ -1,5 +1,5 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="供电与接线的通用要求、两个模块的下载接口"><title>刷机前准备 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html" aria-current="page">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="m1-flash.html">刷机</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-flash.html">刷机</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>刷机前准备</h1>
-<p>这一页是所有型号首刷的<strong>通用要求</strong>。先读完这页，再进入对应型号的操作步骤。型号文档只写各自的差异，供电、接线和模块接口在这里统一说明。</p>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="供电与接线的通用要求、两个模块的下载接口"><title>刷机前准备 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html" aria-current="page">刷机前准备</a><a href="a1-m1-flash.html">A1 / M1 刷机</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>刷机前准备</h1>
+<p>这一页是所有型号首刷的<strong>通用要求</strong>。先读完这页，再进入对应型号的操作步骤。型号文档只写各自的差异，本页统一说明供电和文件选择，具体点位见刷机章节。</p>
 <h2>安全要求（务必先读）</h2>
 <p>拆机和连接下载器前<strong>断开市电、原电源及负载</strong>。</p>
 <p>烧录时：</p>
@@ -32,14 +32,14 @@
 <tr>
 <td>M1 空气检测仪</td>
 <td>EMW3080B / MK3080B</td>
-<td><strong>优先</strong>保留原 Bootloader 的 YMODEM 首刷</td>
-<td><a href="m1-flash.html">M1 刷机</a></td>
+<td>J-Link 或串口 Bootloader</td>
+<td><a href="a1-m1-flash.html">M1 刷机</a></td>
 </tr>
 <tr>
 <td>A1 空气净化器</td>
 <td>EMW3080B / MK3080B</td>
-<td>完整地址烧录</td>
-<td><a href="a1-flash.html">A1 刷机</a></td>
+<td>J-Link 或串口 Bootloader</td>
+<td><a href="a1-m1-flash.html">A1 刷机</a></td>
 </tr>
 </tbody>
 </table>
@@ -60,74 +60,22 @@
 <td>是（完整地址烧录）</td>
 </tr>
 <tr>
-<td><code>.ota.bin.signed</code></td>
+<td><code>.ota.bin</code> / <code>.ota.bin.signed</code></td>
 <td>签名 OTA 升级包</td>
 <td>否，仅用于已运行本项目固件的设备</td>
 </tr>
 <tr>
 <td><code>.ota.bin.raw</code></td>
 <td>原始 OTA 镜像</td>
-<td>否，仅用于无签名救援流程</td>
+<td>否，用于串口镜像准备或无签名救援</td>
 </tr>
 </tbody>
 </table>
 <p><strong>网页升级使用 <code>.ota.bin</code>，不要上传 <code>.all.bin</code> 或 <code>.usr.bin</code>。</strong> 下载后按同版本 <code>SHA256SUMS</code> 校验。</p>
-<h2>EMW3080B：模块接口（M1 / A1）</h2>
-<p>M1 和 A1 使用<strong>相同的模块烧录接口</strong>，但固件文件必须按产品选择。本节适用于<strong>保留庆科 Bootloader、能进入串口下载模式</strong>的原装 EMW3080B，不适用于更换后的其他模块。</p>
-<h3>需要的工具</h3>
+<h2>接线图与操作步骤</h2>
 <ul>
-<li>支持 3.3V 电平和 <strong>921600 波特率</strong>的 USB-TTL 转换器</li>
-<li>独立 3.3V 电源</li>
-<li>导线、焊接工具</li>
-<li>支持 Ymodem 的串口软件（例如 SecureCRT）</li>
+<li><a href="tc1-flash.html">TC1 刷机</a>：EMW3031 模块飞线、工厂测试点及 FlashPlus 步骤。</li>
+<li><a href="a1-m1-flash.html">A1 / M1 刷机</a>：EMW3080B 模块 SWD 与串口点位、A1 工厂测试点、J-Link 和 Bootloader 两种方式。</li>
 </ul>
-<h3>接线</h3>
-<p>按模块引脚编号连接，<strong>TX / RX 交叉</strong>。不要把日志串口当作下载串口。</p>
-<table>
-<thead>
-<tr>
-<th>EMW3080B 模块引脚</th>
-<th>连接</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>16：VCC</td>
-<td>独立电源 3.3V</td>
-</tr>
-<tr>
-<td>17：GND</td>
-<td>电源负极和 USB-TTL GND，共地</td>
-</tr>
-<tr>
-<td>9：用户 UART TX</td>
-<td>USB-TTL RX</td>
-</tr>
-<tr>
-<td>10：用户 UART RX</td>
-<td>USB-TTL TX</td>
-</tr>
-<tr>
-<td>19：BOOT</td>
-<td>进入下载模式时接 GND，完成后解除</td>
-</tr>
-</tbody>
-</table>
-<p><img alt="庆科官网 EMW3080B 引脚图" src="assets/images/emw3080-pins.png" /></p>
-<p><a href="https://docs.mxchip.com/img/zh/1631842737419-34af0113-6807-499a-9ff9-129040293369.png">查看庆科官网引脚图（原图）</a>。<strong>编号方向以该图为准</strong>，勿把模块翻面后直接照搬左右位置。</p>
-<h3>进入下载模式</h3>
-<ol>
-<li><strong>断电接线</strong>，将 BOOT（19）拉低。</li>
-<li>打开串口软件，选转换器对应的 COM 口，设置 <strong>921600、8N1、无流控</strong>。</li>
-<li>再给模块上电。</li>
-</ol>
-<p>看到 Bootloader 命令提示后才能继续。<strong>没有提示时先检查供电、共地、TX/RX 和 BOOT，不要盲目发送烧录命令。</strong></p>
-<h3>模块相关的注意事项</h3>
-<ul>
-<li><strong>M1</strong>：保留原传感器控制器；烧录期间若主板也在驱动模块 RX，应隔离该串口的另一端输出，避免两个 TX 同时驱动一根线。</li>
-<li><strong>A1</strong>：烧录时断开原电源和风机连接。</li>
-</ul>
-<h3>来源</h3>
-<p>接线、命令与 Ymodem 流程来自<a href="https://docs.mxchip.com/zh/foiwqd8gbgh23xu2/bwyo0fs5t2rquekz/antua5wkt8m3qx7l/lqdz2h5zpp117imt.html">庆科 EMW3080 系列模组固件烧录方法</a>。该页面也提供 Imagetool 工具与恢复接线说明。</p>
 <h2>图片与工具来源</h2>
-<p>刷机教程中的资源位于本站 <code>guides/assets/</code> 目录，校验和见 <a href="assets/SHA256SUMS">SHA256SUMS</a>。图片来源与授权说明见<a href="sources.html">资源来源</a>。</p></article><div class="guide-pager"><a href="quick-start.html">上一页<b>快速开始</b></a><a class="next" href="firmware-update.html">下一页<b>固件更新</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
+<p>图片与工具见<a href="sources.html">资源来源</a>，资源校验和见 <a href="assets/SHA256SUMS">SHA256SUMS</a>。</p></article><div class="guide-pager"><a href="quick-start.html">上一页<b>快速开始</b></a><a class="next" href="a1-m1-flash.html">下一页<b>A1 / M1 刷机</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
