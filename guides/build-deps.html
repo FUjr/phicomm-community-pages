@@ -26,11 +26,11 @@
 </tr>
 <tr>
 <td><a href="https://github.com/phicomm-io/phicomm-community-firmware/releases/download/0.0.0/mico-os-3.6.4.bundle">mico-os-3.6.4.bundle</a></td>
-<td>M1/A1 SDK 的 Git 副本，<a href="https://github.com/MXCHIP/mico-os/tree/6c465211d3ff8797cd835e400ec54a06530dd476">MXCHIP/mico-os</a>，固定提交 <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>，不含本项目补丁</td>
+<td>三型号共用的 SDK Git 副本，<a href="https://github.com/MXCHIP/mico-os/tree/6c465211d3ff8797cd835e400ec54a06530dd476">MXCHIP/mico-os</a>，固定提交 <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>，不含本项目补丁</td>
 </tr>
 <tr>
 <td><a href="https://github.com/phicomm-io/phicomm-community-firmware/releases/download/0.0.0/tc1-mico-sdk.tar.gz">tc1-mico-sdk.tar.gz</a></td>
-<td>TC1 使用的 MiCO 3.5.4 SDK 与第三方许可证；构建时校验并解压到 <code>build/tc1-sdk/</code></td>
+<td>历史 TC1 MiCO 3.5.4 归档，仅用于构建旧版本；当前版本统一使用上面的 MiCO 3.6.4</td>
 </tr>
 </tbody>
 </table>
@@ -44,13 +44,12 @@ cd Python-2.7.18
 make -j4
 make install
 </code></pre>
-<p>M1/A1 SDK <strong>必须使用 Git 副本</strong>，以保留构建脚本检查的提交身份。在项目根目录分别恢复，避免两型号补丁混用：</p>
-<pre><code class="language-sh">mkdir -p build/m1-sdk build/a1-sdk
-git clone /下载路径/mico-os-3.6.4.bundle build/m1-sdk/mico-os
-git clone /下载路径/mico-os-3.6.4.bundle build/a1-sdk/mico-os
-git -C build/m1-sdk/mico-os rev-parse HEAD
+<p>三型号的 SDK 来源和固定提交统一由仓库的 <code>common/mico-sdk.json</code> 定义。默认从上游下载一次，保存在 <code>build/mico-upstream.git</code>，再为各型号创建独立 checkout 并应用板级补丁。A1/M1 的 GPIO 初始化不同，不能共用已打补丁的工作目录。</p>
+<p>使用本地 Git bundle 构建时，指定来源即可，无需分别下载：</p>
+<pre><code class="language-sh">export MICO_SDK_REPOSITORY=/下载路径/mico-os-3.6.4.bundle
+./build.sh
 </code></pre>
-<p>输出应为上述固定提交。</p>
+<p><code>MICO_SDK_CACHE</code> 可以指定公共源缓存的绝对路径。每个 checkout 都会校验提交为 <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>；来源不符或目录不完整会终止构建。默认 checkout 为 <code>build/tc1-sdk-3.6.4/mico-os</code>、<code>build/m1-sdk/mico-os</code> 和 <code>build/a1-sdk/mico-os</code>，也可以通过各型号的 <code>*_SDK_DIR</code> 指定同一提交的独立 Git checkout。</p>
 <h2 id="构建">构建</h2>
 <p>在项目根目录运行：</p>
 <pre><code class="language-sh">TC1_TOOLS_DIR=/opt/phicomm-tools ./TC1/build.sh
@@ -59,4 +58,4 @@ A1_TOOLS_DIR=/opt/phicomm-tools ./A1/build.sh
 </code></pre>
 <p>脚本会应用仓库内各产品的 SDK 补丁。<strong>工具目录已有正确版本的 GCC 与 Python 时，不再下载它们。</strong></p>
 <p>仍需 Linux 系统的 <code>make</code>、Git、Perl、Python 3、bzip2、curl、C 编译环境及相关系统库；安装命令见<a href="https://github.com/phicomm-io/phicomm-community-firmware#readme">项目构建说明</a>。</p>
-<p>TC1 支持用 <code>TC1_SDK_ARCHIVE</code> 指定已下载的 <code>tc1-mico-sdk.tar.gz</code>。在项目根目录执行 <code>./build.sh</code> 可依次构建三个型号。</p></article><div class="guide-pager"><a href="iotcloud-deploy.html">上一页<b>IotCloud 部署</b></a><a class="next" href="sources.html">下一页<b>资源来源</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
+<p>当前版本不再下载 TC1 的 3.5.4 归档。在项目根目录执行 <code>./build.sh</code> 可依次构建三个型号。</p></article><div class="guide-pager"><a href="iotcloud-deploy.html">上一页<b>IotCloud 部署</b></a><a class="next" href="sources.html">下一页<b>资源来源</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

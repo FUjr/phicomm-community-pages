@@ -26,11 +26,11 @@
 </tr>
 <tr>
 <td><a href="https://github.com/phicomm-io/phicomm-community-firmware/releases/download/0.0.0/mico-os-3.6.4.bundle">mico-os-3.6.4.bundle</a></td>
-<td>Git copy of the M1 / A1 SDK at <a href="https://github.com/MXCHIP/mico-os/tree/6c465211d3ff8797cd835e400ec54a06530dd476">MXCHIP/mico-os</a>, commit <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>, without project patches</td>
+<td>Shared Git SDK copy for all three products at <a href="https://github.com/MXCHIP/mico-os/tree/6c465211d3ff8797cd835e400ec54a06530dd476">MXCHIP/mico-os</a>, commit <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>, without project patches</td>
 </tr>
 <tr>
 <td><a href="https://github.com/phicomm-io/phicomm-community-firmware/releases/download/0.0.0/tc1-mico-sdk.tar.gz">tc1-mico-sdk.tar.gz</a></td>
-<td>TC1 MiCO 3.5.4 SDK and third-party licenses, verified and extracted into <code>build/tc1-sdk/</code></td>
+<td>Historical TC1 MiCO 3.5.4 archive for older revisions; current builds use MiCO 3.6.4 above</td>
 </tr>
 </tbody>
 </table>
@@ -44,13 +44,12 @@ cd Python-2.7.18
 make -j4
 make install
 </code></pre>
-<p>M1 / A1 require <strong>Git clones</strong>, not an unpacked source tree, because the build checks commit identity. Restore separate copies from the project root to keep product patches separate:</p>
-<pre><code class="language-sh">mkdir -p build/m1-sdk build/a1-sdk
-git clone /path/to/mico-os-3.6.4.bundle build/m1-sdk/mico-os
-git clone /path/to/mico-os-3.6.4.bundle build/a1-sdk/mico-os
-git -C build/m1-sdk/mico-os rev-parse HEAD
+<p>All products read the SDK source and pinned commit from <code>common/mico-sdk.json</code>. The build downloads upstream once into <code>build/mico-upstream.git</code>, then creates a separate Git checkout for each product's board patches. A1 and M1 initialize GPIOs differently, so they must keep separate patched working directories.</p>
+<p>To use an offline Git bundle, set its path before building:</p>
+<pre><code class="language-sh">export MICO_SDK_REPOSITORY=/path/to/mico-os-3.6.4.bundle
+./build.sh
 </code></pre>
-<p>The result must be the pinned commit above.</p>
+<p><code>MICO_SDK_CACHE</code> selects a different absolute path for the shared source cache. Every checkout must match commit <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>; an incorrect commit or incomplete checkout stops the build. Defaults are <code>build/tc1-sdk-3.6.4/mico-os</code>, <code>build/m1-sdk/mico-os</code> and <code>build/a1-sdk/mico-os</code>. Each product's <code>*_SDK_DIR</code> may point to a separate Git checkout at the same commit.</p>
 <h2 id="build">Build</h2>
 <p>From the project root:</p>
 <pre><code class="language-sh">TC1_TOOLS_DIR=/opt/phicomm-tools ./TC1/build.sh
@@ -58,4 +57,4 @@ M1_TOOLS_DIR=/opt/phicomm-tools ./M1/build.sh
 A1_TOOLS_DIR=/opt/phicomm-tools ./A1/build.sh
 </code></pre>
 <p>The scripts apply product-specific SDK patches. Correct existing GCC / Python copies are reused without downloading. Linux also needs make, Git, Perl, Python 3, bzip2, curl, a C build environment and related system libraries; see the <a href="https://github.com/phicomm-io/phicomm-community-firmware#readme">project build instructions</a>.</p>
-<p>Use <code>TC1_SDK_ARCHIVE</code> for an already downloaded TC1 SDK archive. Run <code>./build.sh</code> at the project root to build all three products in sequence.</p></article><div class="guide-pager"><a href="iotcloud-deploy.html">Previous<b>Deploy IotCloud</b></a><a class="next" href="sources.html">Next<b>Asset sources</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p>Community-maintained, not affiliated with the manufacturer. Check the documentation for your release. The firmware repository has no single license covering all code.</p></div><div><b>Documentation</b><ul><li><a href="quick-start.html">Quick start</a></li><li><a href="faq.html">Troubleshooting</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>Source</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware">Firmware</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt">MQTT platform</a></li></ul></div></div></footer><script src="../../site.js"></script></body></html>
+<p>Current builds no longer download the TC1 3.5.4 archive. Run <code>./build.sh</code> at the project root to build all three products in sequence.</p></article><div class="guide-pager"><a href="iotcloud-deploy.html">Previous<b>Deploy IotCloud</b></a><a class="next" href="sources.html">Next<b>Asset sources</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p>Community-maintained, not affiliated with the manufacturer. Check the documentation for your release. The firmware repository has no single license covering all code.</p></div><div><b>Documentation</b><ul><li><a href="quick-start.html">Quick start</a></li><li><a href="faq.html">Troubleshooting</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>Source</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware">Firmware</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt">MQTT platform</a></li></ul></div></div></footer><script src="../../site.js"></script></body></html>

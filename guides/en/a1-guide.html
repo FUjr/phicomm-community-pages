@@ -2,10 +2,14 @@
 <p>A1 provides fan control, a light ring, child lock, night mode and automatic control using M1 readings. For installation, see <a href="a1-m1-flash.html">A1 / M1 flashing</a>.</p>
 <h2 id="power-and-fan">Power and fan</h2>
 <p>The home page has power and fan-speed controls. Turn the purifier on or off, select a manual speed, or use automatic control based on M1 readings and configured rules.</p>
+<h2 id="estimated-filter-life">Estimated filter life</h2>
+<p>The home page shows remaining life and accumulated fan running hours. Standby and stopped time do not count; manual, scheduled, night and automatic operation all count equally, regardless of speed. The default estimate is <strong>4320 hours</strong> (180 days continuously). Expand “Adjust rated lifetime” to set 1–20000 hours according to your filter specification; changing this value preserves accumulated usage. Filter condition and air quality also affect when replacement is needed.</p>
+<p>At 10% or less, the page recommends replacement; at exhaustion it stays at 0% and fan controls remain available. After installing a new filter, select “Reset after replacing filter” and confirm. This clears usage and restores 100%, preserving the configured lifetime.</p>
+<p>Usage is saved every hour of operation, when the fan stops, and before a normal restart or update. Sudden power loss may lose the most recent partial hour. A network reset preserves usage; a factory reset clears it and restores the default lifetime. The first upgrade starts at zero because previous filter usage is unknown.</p>
 <h2 id="light-ring">Light ring</h2>
 <p>The ring shows air quality, connection progress and operation feedback. Configure air-quality colors, segment ranges and the colors corresponding to reading ranges. Connection warnings override normal lighting after normal effects are rendered and remain subject to the night brightness limit. Normal lighting regains control when connectivity is healthy. See <a href="faq.html#connection-indicators">connection indicators</a>.</p>
 <h2 id="child-lock-and-night-mode">Child lock and night mode</h2>
-<p>Child lock blocks custom physical-button actions. Night mode reduces brightness during the configured time period. An end time earlier than the start means the period crosses midnight.</p>
+<p>Child lock blocks normal physical-button actions; a configured child-lock gesture can still unlock the device. Night mode reduces brightness during the configured time period. An end time earlier than the start means the period crosses midnight.</p>
 <h2 id="m1-automation">M1 automation</h2>
 <p>All automation configuration lives on A1; M1 only measures and responds.</p>
 <ol>
@@ -15,7 +19,10 @@
 </ol>
 <p>A1 computes the arithmetic mean of bound M1 readings no older than 15 seconds. With no valid data, readings are <code>null</code>. A1 initiates sessions, probes and reads, preferring LAN and falling back to MQTT. It periodically reinitializes sessions after M1 restarts without manual token entry. <strong>Upgrade both sides together.</strong> See <a href="mqtt-link.html#a1-and-m1-automation">pairing instructions</a>.</p>
 <h2 id="buttons">Buttons</h2>
-<p>A1 has a function button and a Wi-Fi button. By default, a single function-button click cycles the fan speed. Custom mappings support 1–30 clicks, executed after the click interval, and 1–4 second long presses. Five seconds and above are reserved. Child lock blocks custom actions; identical consecutive mappings are folded in the UI.</p>
+<p>A1 has a power button and a Wi-Fi button. By default, a single power-button click toggles the fan. In <strong>Settings → Automation → Button events</strong>, select power, Wi-Fi or both buttons, then choose a gesture and action. A combination requires both buttons to overlap; it cancels the single-button gestures for that interaction. Releasing the buttons at different times does not trigger Wi-Fi recovery.</p>
+<p>Custom mappings support 1–30 clicks, executed after the click interval, and 1–4 second long presses, executed on release. Five seconds and above are reserved. Actions include cycling or selecting a light effect, resetting filter usage, fan power and speed, ring power and brightness, always-on lighting, child lock and reboot. Switch actions support on, off and toggle; ring toggles can preserve brightness. Identical consecutive mappings are folded in the UI.</p>
+<h3 id="filter-life">Filter life</h3>
+<p>The button-events page also shows filter usage, allows rated-lifetime edits and resets usage after replacement. Reset can be bound to a gesture. The estimate follows the filter-life rules above.</p>
 <h3 id="recovery-gestures">Recovery gestures</h3>
 <p>The Wi-Fi button performs recovery <strong>on release</strong>:</p>
 <table>

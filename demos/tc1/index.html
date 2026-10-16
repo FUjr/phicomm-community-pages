@@ -4,11 +4,18 @@
 (()=>{
 const create=model=>{
  const state={name:'演示设备',model,device_id:{tc1:'aabbccddee01',m1:'aabbccddee02',a1:'aabbccddee03'}[model],version:'演示',ip:'192.0.2.10',ssid:'Demo Wi-Fi',wifi_connected:true,mqtt_connected:true,mqtt_status:'ready',mqtt_host:'demo.invalid',mqtt_user:'demo',mqtt_port:1883,mqtt_topic_mode:'tmcp',mqtt_protocol:'tmcp',brightness_requested:3,brightness:192,red:80,green:200,blue:120,speed:60,percentage:60,applied_speed:60,requested_speed:60,fan_on:true,fan_ready:true,panel_ready:true,light_on:true,sensor_received:true,sensor_valid:true,age_ms:200,temperature:25,humidity:48,formaldehyde:.025,pm25:18,time_synced:true,timezone_minutes:480,ntp_host:'pool.ntp.org',ntp_status:'synced',ntp_synced:true,ota_progress:0,ota_state:'idle',socket_names:['台灯','显示器','音箱','充电器','风扇','备用'],socket_states:[true,true,false,true,false,false],report_seconds:5,powerCoefficientX100:1710,free_memory:48000,uptime_seconds:3600,power_watts:36,energy_kwh:.28,led_enabled:true};
- const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install','ota.notes','ota.notes.get','ota.status.get',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['fan.set','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
- const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[]},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{enabled:0,mode:0,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['github','cn','global']},'ota.check.get':{state:'idle',available:false}};
+ const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install','ota.notes','ota.notes.get','ota.status.get',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['light_effect.next','light_effect.select','light_always.set','filter.get','filter.set','filter.reset','fan.set','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
+ const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[],capacity:model==='a1'?102:68},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{enabled:0,mode:0,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['github','cn','global']},'ota.check.get':{state:'idle',available:false}};
  function command(action,p={}){
+  if(model==='a1'&&!state.filter)state.filter={used_seconds:864000,lifetime_hours:4320,remaining_percent:95,replacement_due:false};
+  if(model==='a1'&&action.startsWith('filter.')){
+   if(action==='filter.reset')state.filter.used_seconds=0;
+   if(action==='filter.set')state.filter.lifetime_hours=p.lifetime_hours;
+   const f=state.filter;f.remaining_percent=Math.max(0,Math.ceil((1-f.used_seconds/(f.lifetime_hours*3600))*100));f.replacement_due=f.remaining_percent<=10;
+   return structuredClone(f);
+  }
   if(action==='status.get')return structuredClone(state);
-  if(action==='capabilities.get')return {model,actions};
+  if(action==='capabilities.get')return {model,actions,...(model==='a1'?{button_keys:['power','wifi','combination']}:{})};
   if(action==='config.get')return structuredClone(state);
   if(action==='config.set'){Object.assign(state,p.values||{});if(p.values?.names)state.socket_names=p.values.names;}
   if(action==='outlet.set'){state.socket_states[p.index]=p.toggle?!state.socket_states[p.index]:!!p.on;}
@@ -45,7 +52,7 @@ document.addEventListener('DOMContentLoaded',()=>{const banner=document.createEl
 <style>/* Unified WebUI design language for TC1, A1 and M1.
  * One stylesheet for all three offline pages; no CDN, no web fonts.
  * Tokens, then layout, then components, then per-product pages. */
-:root{color-scheme:light dark;
+:root{color-scheme:light dark;-webkit-tap-highlight-color:transparent;
  --bg:#f4f6f9;--surface:#fff;--surface-muted:#eef1f5;--text:#1d2430;--muted:#5f6b7c;--border:#dbe0e8;
  --accent:#305ed4;--accent-text:#fff;--accent-soft:#e6edfc;
  --danger:#b8353c;--danger-soft:#fbe9ea;--success:#26734c;--success-soft:#e3f3ea;--warn:#9a5b00;--warn-soft:#fdf1dc;
@@ -97,15 +104,15 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke
 .home{display:grid;gap:16px}
 
 /* Buttons */
-.btn{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 16px;border-radius:var(--radius-s);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;text-decoration:none;width:auto}
+.btn{position:relative;font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 16px;border-radius:var(--radius-s);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;text-decoration:none;width:auto}
 .btn:hover{background:var(--surface-muted)}
 .btn.primary{background:var(--accent);color:var(--accent-text);border-color:transparent}.btn.primary:hover{filter:brightness(1.08)}
 .btn.danger{color:var(--danger);border-color:var(--danger)}.btn.danger:hover{background:var(--danger-soft)}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}.btn.ghost:hover{background:var(--surface-muted);color:var(--text)}
 .btn.icon{padding:6px;min-height:32px;width:32px}
 .btn:disabled,.btn[aria-busy=true]{opacity:.55;cursor:not-allowed}
-.btn[aria-busy=true]::before{content:"";width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* Keep pending feedback out of flex flow so buttons and wrapped rows stay put. */
+.btn[aria-busy=true]::before{content:"";position:absolute;left:25%;bottom:3px;width:50%;height:2px;border-radius:1px;background:currentColor;animation:pulse 1s linear infinite;pointer-events:none}
 
 /* Segmented control */
 .seg{display:inline-flex;background:var(--surface-muted);border-radius:var(--radius-s);padding:3px;gap:2px;flex-wrap:wrap}
@@ -227,7 +234,7 @@ pre{overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;bac
 .diag dt{color:var(--muted)}.diag dd{margin:0;text-align:right;overflow-wrap:anywhere}
 
 /* ---------- A1 ---------- */
-.a1-home{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-areas:"fan panel" "fan auto" "light light"}
+.a1-home{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-areas:"fan panel" "fan auto" "filter filter" "light light"}
 .fan-hero{display:flex;align-items:center;gap:20px}
 .power{flex:none;width:96px;height:96px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;background:var(--surface-muted);color:var(--muted);box-shadow:inset 0 0 0 1px var(--border);transition:background .2s,box-shadow .2s,color .2s;width:96px}
 .power svg{width:38px;height:38px}
@@ -388,6 +395,14 @@ pre{overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;bac
 (()=>{
 'use strict';
 const D={
+'filter.title':['Estimated filter life','滤芯寿命预估'],
+'filter.hint':['Counts fan running time only. Default: 4320 h (180 days continuously). Adjust to your filter specification; air quality and filter condition also affect replacement.','仅累计风机开启时间，默认 4320 小时（连续运行 180 天）。可按滤芯规格调整；更换时间还需结合空气质量和滤芯状态。'],
+'filter.usage':['Used {used} / {total} h','已用 {used} / {total} 小时'],
+'filter.normal':['In service','使用中'],'filter.due':['Replace filter soon','建议更换滤芯'],'filter.expired':['Replacement due','请更换滤芯'],
+'filter.settings':['Adjust rated lifetime','调整额定寿命'],'filter.lifetime':['Rated lifetime (hours, 1–20000)','额定寿命（小时，1–20000）'],
+'filter.reset':['Reset after replacing filter','更换滤芯后重置'],
+'filter.confirm':['Reset accumulated usage to zero? Only reset after installing a new filter.','将累计使用时间清零并恢复至 100%？请在更换新滤芯后执行。'],
+'filter.reset_done':['Filter usage reset','滤芯使用时间已重置'],
 'import.platform':['Open IotCloud','打开 IotCloud'],
 'import.title':['Import MQTT configuration','导入 MQTT 配置'],
 'import.preview':['Broker: {host}:{port} · Username: {user}','Broker：{host}:{port} · 用户名：{user}'],
@@ -422,6 +437,14 @@ const D={
 's.fault':['Heartbeat timeout or watchdog error','心跳超时或看门狗错误'],
 'average.temperature':['Mean temperature','平均温度'],'average.humidity':['Mean humidity','平均湿度'],'average.pm25':['Mean PM2.5','平均 PM2.5'],'average.formaldehyde':['Mean formaldehyde','平均甲醛'],
 /* common */
+'btn.key_both':['Wi-Fi + power keys','Wi-Fi + 电源组合键'],
+'btn.reset_note_a1':['Only the Wi-Fi key alone uses the fixed 5/10-second recovery gestures. Combination gestures cancel individual key actions.','仅单独长按 Wi-Fi 键 5／10 秒触发固定恢复操作；组合键会取消本轮单键动作。'],
+'op.effect_next':['Cycle light effect','切换到下一灯效'],'op.effect_select':['Select light effect','设置灯效'],
+'op.filter_reset':['Reset filter usage','重置滤芯寿命'],'op.light_always':['Light always on','灯环常亮'],
+'op.set_brightness':['Also set brightness','同时设置亮度'],
+'filter.status':['Used {used} hours · {remaining}% remaining','已使用 {used} 小时 · 剩余 {remaining}%'],
+'filter.reset_hint':['Use this gesture after replacing the filter to clear its accumulated runtime.','更换滤芯后使用此手势，将累计运行时间清零。'],
+'filter.reset_confirm':['Clear the filter runtime after replacing the filter?','确认已更换滤芯并清零累计使用时间？'],
 'btn.key':['Key','按键'],'btn.key_fn':['Function key','功能键'],'btn.key_power':['Power key','电源键'],'btn.key_wifi':['Wi-Fi key','Wi-Fi 键'],'btn.pick_action':['Choose an action','请选择动作'],
 'op.on':['On','开启'],'op.off':['Off','关闭'],'op.toggle':['Toggle','切换'],'op.all':['All sockets','全部插座'],'op.target':['Target','对象'],'op.state':['New state','目标状态'],'op.brightness':['Brightness','亮度'],'op.speed':['Fan speed','风速'],
 'op.outlet':['Sockets','插座'],'op.fan':['Fan','风机'],'op.light':['Light ring','灯环'],'op.child_lock':['Child lock','童锁'],'op.indicator':['Indicator light','指示灯'],'op.display':['Screen brightness','屏幕亮度'],'op.reboot':['Restart device','重启设备'],
@@ -971,7 +994,13 @@ function showRoute(){
 }
 function afterShow(page){
  if(!page)return;
- const active=document.querySelector('.side a[aria-current]');if(active&&active.scrollIntoView)active.scrollIntoView({block:'nearest',inline:'center'});
+ const active=document.querySelector('.side a[aria-current]'),side=$('side');
+ // Reveal mobile menu items without scrollIntoView scrolling the whole page.
+ if(active&&side&&side.scrollWidth>side.clientWidth){
+  const item=active.getBoundingClientRect(),menu=side.getBoundingClientRect();
+  if(item.left<menu.left)side.scrollLeft+=item.left-menu.left;
+  else if(item.right>menu.right)side.scrollLeft+=item.right-menu.right;
+ }
  const p=UI.pages[page];if(p&&p.show)p.show();
 }
 /* Wi-Fi scan is shared: start, poll, and hand the sorted list to a callback. */
@@ -1322,13 +1351,15 @@ const {h,icon,toast,run,switchRow,seg,daysPicker,presetDays,daysText,hhmm,toMinu
 const ACTIONS={
  'outlet.set':'op.outlet','fan.set':'op.fan','light.set':'op.light',
  'child_lock.set':'op.child_lock','indicator.set':'op.indicator',
- 'display.set':'op.display','system.reboot':'op.reboot'};
+ 'display.set':'op.display','system.reboot':'op.reboot',
+ 'light_effect.next':'op.effect_next','light_effect.select':'op.effect_select',
+ 'filter.reset':'op.filter_reset','light_always.set':'op.light_always'};
 const actKey=a=>ACTIONS[a]||'op.none';
 const sel=(parent,labelKey,options)=>{const s=h('select',{},options.map(([v,k])=>h('option',{value:v},typeof k==='function'?k():t(k))));parent.append(h('label',{class:'field'},h('span',{i18n:labelKey}),s));return s;};
 
 /* Shared action editor: one control group per supported action. */
 function actionEditor(host,{keys=false}={}){
- const caps=UI.caps||{},available=Object.keys(ACTIONS).filter(a=>(caps.actions||[]).includes(a));
+ const caps=UI.caps||{},available=Object.keys(ACTIONS).filter(a=>(caps.actions||[]).includes(a)&&(keys||!['light_effect.next','light_effect.select','filter.reset'].includes(a)));
  const box=h('div',{class:'stack'}),fields=h('div',{class:'stack'});
  const options=[...(keys?[['none','op.none']]:[]),...available.map(a=>[a,actKey(a)])];
  const pick=keys?sel(host,'btn.action',options):seg(options,v=>draw(v),{full:true});
@@ -1345,14 +1376,19 @@ function actionEditor(host,{keys=false}={}){
    if(params.index!=null)index.value=String(params.index);
    parts.push(()=>index.value==='all'?{}:{index:Number(index.value)});
   }
-  const switchable=['outlet.set','fan.set','light.set','child_lock.set','indicator.set'].includes(a);
+  const switchable=['outlet.set','fan.set','light.set','child_lock.set','indicator.set','light_always.set'].includes(a);
   if(switchable){
-   const values=keys&&['outlet.set','fan.set'].includes(a)?['on','off','toggle']:['on','off'];
+   const values=keys&&(['outlet.set','fan.set'].includes(a)||caps.model==='a1')?['on','off','toggle']:['on','off'];
    const on=sel(fields,'op.state',values.map(v=>[v,'op.'+v]));
    on.value=params.toggle?'toggle':(params.on===false||params.enabled===false)?'off':'on';
    const field=['outlet.set','fan.set'].includes(a)?'on':'enabled';
    parts.push(()=>on.value==='toggle'?{toggle:true}:{[field]:on.value==='on'});
   }
+  if(a==='light_effect.select'){
+   const effect=sel(fields,'op.effect_select',Array.from({length:5},(_,i)=>[String(i),'a1.effect.'+i]));
+   effect.value=String(params.effect||0);parts.push(()=>({effect:Number(effect.value)}));
+  }
+  if(a==='filter.reset')fields.append(info('filter.reset_hint'));
   if(a==='fan.set'){
    const m={speed:params.speed||60},[out,range]=slider(m,'speed',{min:1});
    fields.append(h('div',{class:null},h('div',{class:'row between'},h('span',{class:'label',i18n:'op.speed'}),out)),range);
@@ -1362,7 +1398,10 @@ function actionEditor(host,{keys=false}={}){
    const step=a==='display.set'?25:1,m={brightness:params.brightness!=null?params.brightness:100};
    const [out,range]=slider(m,'brightness',{min:0,max:100,step,fmt:v=>v+'%'});
    fields.append(h('div',{class:null},h('div',{class:'row between'},h('span',{class:'label',i18n:'op.brightness'}),out)),range);
-   parts.push(()=>({brightness:Number(m.brightness)}));
+   if(a==='light.set'&&keys){
+    const setBrightness=switchRow(null,'op.set_brightness');setBrightness.querySelector('input').checked=params.brightness!=null;
+    fields.append(setBrightness);parts.push(()=>setBrightness.querySelector('input').checked?{brightness:Number(m.brightness)}:{});
+   }else parts.push(()=>({brightness:Number(m.brightness)}));
   }
   read=()=>Object.assign({},...parts.map(f=>f()));
   current=a;
@@ -1443,7 +1482,9 @@ function schedulePage(dev){
 /* ---------- Custom button events ---------- */
 function buttonsPage(dev){
  const listBox=h('div',{class:'stack'}),keyHost=h('div',{class:'fields'});
- const key=sel(keyHost,'btn.key',dev.model==='A1'?[['0','btn.key_power'],['1','btn.key_wifi']]:[['0','btn.key_fn']]);
+ const keyIds=dev.model==='A1'?(UI.caps.button_keys?.includes('combination')?[0,1,2]:[0,1]):[0];
+ const keyName=k=>t(dev.model==='A1'?['btn.key_power','btn.key_wifi','btn.key_both'][Number(k)]:'btn.key_fn');
+ const key=sel(keyHost,'btn.key',keyIds.map(k=>[String(k),()=>keyName(k)]));
  const count=h('input',{type:'number',min:1,max:30,value:1,required:true});
  const countLabel=h('span',{},t('btn.click_count'));
  const kind=seg([['clicks','btn.click'],['seconds','btn.hold']],v=>{
@@ -1452,13 +1493,13 @@ function buttonsPage(dev){
  },{full:true});kind.set('clicks');
  keyHost.append(h('div',{class:'field'},h('span',{i18n:'btn.kind'}),kind),h('label',{class:'field'},countLabel,count));
  const editorHost=h('div',{class:'stack'}),editor=actionEditor(editorHost,{keys:true});
- const keyName=k=>t(dev.model==='A1'?(Number(k)===0?'btn.key_power':'btn.key_wifi'):'btn.key_fn');
  const gesture=v=>v.seconds?t('btn.hold_full',{n:v.seconds}):t(v.clicks===1?'btn.single':'btn.click_full',{n:v.clicks});
  function actionText(v){
   if(v.action==='none')return t('op.none');
   const p=v.params||{},state=t(p.toggle?'op.toggle':p.on===false||p.enabled===false?'op.off':'op.on');
   const target=v.action==='outlet.set'?(p.index==null?t('op.all'):(UI.state?.socket_names?.[p.index]||t('tc1.socket_n',{n:p.index+1}))):t(actKey(v.action));
-  if(v.action==='system.reboot')return target;
+  if(['system.reboot','light_effect.next','filter.reset'].includes(v.action))return target;
+  if(v.action==='light_effect.select')return target+' · '+t('a1.effect.'+p.effect);
   let text=v.action==='display.set'?target:state+' · '+target;
   if(p.speed!=null)text+=' · '+p.speed+'%';
   if(p.brightness!=null)text+=' · '+p.brightness+'%';
@@ -1485,10 +1526,10 @@ function buttonsPage(dev){
     },'common.deleted')},t('common.delete'))));
  }
  async function load(){
-  const items=[];let offset=0;
-  do{const page=await command('buttons.get',{offset,limit:8});items.push(...page.items);if(page.next==null||page.next<=offset)break;offset=page.next;}while(offset<68);
+  const items=[];let offset=0,capacity=68;
+  do{const page=await command('buttons.get',{offset,limit:8});items.push(...page.items);capacity=page.capacity||capacity;if(page.next==null||page.next<=offset)break;offset=page.next;}while(offset<capacity);
   listBox.replaceChildren();
-  for(const k of (dev.model==='A1'?[0,1]:[0])){
+  for(const k of keyIds){
    const groups=[];
    for(const type of ['clicks','seconds']){
     const values=items.filter(v=>Number(v.key)===k&&v[type]>0).sort((a,b)=>a[type]-b[type]);
@@ -1510,11 +1551,22 @@ function buttonsPage(dev){
   run(save,async()=>{const a=editor.get();if(a.action==='none')throw Error(t('btn.pick_action'));
    await command('buttons.set',{...selected(),...a});await load();},'common.saved');
  });
+ let filterStatus,filterHours;
+ function filterCards(){
+  if(dev.model!=='A1'||!UI.caps.actions.includes('filter.get'))return [];
+  filterStatus=h('p',{'data-filter-status':''});filterHours=h('input',{type:'number',min:1,max:20000,required:true,'data-filter-hours':''});
+  const form=h('form',{class:'stack'},filterStatus,info('filter.hint'),h('label',{class:'field'},h('span',{i18n:'filter.lifetime'}),filterHours),
+   h('div',{class:'form-actions'},h('button',{type:'submit',class:'btn primary'},t('common.save')),
+    h('button',{type:'button',class:'btn ghost',onclick:e=>run(e.currentTarget,async()=>{if(!window.confirm(t('filter.reset_confirm')))return;await command('filter.reset',{});await loadFilter();},null)},t('op.filter_reset'))));
+  form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;run(null,async()=>{await command('filter.set',{lifetime_hours:Number(filterHours.value)});await loadFilter();},'common.saved');});
+  return [card('filter.title',null,form)];
+ }
+ async function loadFilter(){if(!filterStatus)return;const f=await command('filter.get');filterHours.value=f.lifetime_hours;filterStatus.textContent=t('filter.status',{used:(f.used_seconds/3600).toFixed(1),remaining:f.remaining_percent});}
  preview();
  return {el:h('div',{class:'stack'},pageHead('nav.buttons','btn.lead'),card('btn.current',null,listBox),
   card('btn.recovery',null,h('div',{class:'button-mapping'},h('b',{},t('btn.hold_full',{n:5})),h('span',{},t('btn.reset_wifi'))),
-   h('div',{class:'button-mapping'},h('b',{},t('btn.hold_full',{n:10})),h('span',{},t('op.10'))),info('btn.reset_note')),editorCard),
-  async show(){await load();preview();}};
+   h('div',{class:'button-mapping'},h('b',{},t('btn.hold_full',{n:10})),h('span',{},t('op.10'))),info(dev.model==='A1'?'btn.reset_note_a1':'btn.reset_note')),editorCard,...filterCards()),
+  async show(){await load();await loadFilter();preview();}};
 }
 
 /* ---------- Night mode ---------- */
@@ -1660,7 +1712,7 @@ UI.start({
  scheduleLead:'sch.lead_tc1',interval:3000,hasButtons:true,
  groups:[['grp.network',['network','mqtt']],['grp.device',['device']],['grp.auto',['schedule','buttons']],['grp.system',['firmware','diagnostics','logs','maintenance']]],
  nav:{network:'nav.wifi',mqtt:'nav.mqtt',device:'nav.general',schedule:'nav.schedule',buttons:'nav.buttons',firmware:'nav.firmware',diagnostics:'nav.diagnostics',logs:'nav.logs',maintenance:'nav.maintenance'},
- pages:{},
+ pages:{device:{}},
  diagGroups:[['diag.g_sockets',['socket_names','socket_states','child_lock','led_enabled']],
   ['diag.g_power',['report_seconds','powerCoefficientX100']],
   ['diag.g_time',['time_synced','utc_time']],['diag.g_lan',['mask','gateway']]],
