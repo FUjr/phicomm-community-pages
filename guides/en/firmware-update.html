@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="OTA sources, packages and recovery"><title>Firmware updates · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../../style.css"><script src="../../theme.js"></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="wrap"><a class="brand" href="../../"><span class="mark">P</span><span class="word"><b>PHICOMM COMMUNITY</b><span>Community firmware</span></span></a><nav class="site-nav" aria-label="Main navigation"><a href="../../#devices">Devices</a><a href="../../#features">Features</a><a href="../../#demos">Demos</a><a href="../../#docs">Documentation</a><a href="../../#releases">Downloads</a></nav><div class="prefs"><label class="sr" for="themePick">Theme</label><select id="themePick"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="Documentation navigation"><p class="guide-group">Getting started</p><a href="quick-start.html">Quick start</a><a href="flash-prep.html">Before flashing</a><a href="firmware-update.html" aria-current="page">Firmware updates</a><a href="mqtt-link.html">MQTT and automation</a><a href="faq.html">Troubleshooting</a><p class="guide-group">TC1 power strip</p><a href="tc1-guide.html">TC1 operation</a><a href="tc1-flash.html">Flash TC1</a><p class="guide-group">M1 air quality monitor</p><a href="m1-guide.html">M1 operation</a><a href="a1-m1-flash.html">Flash A1 / M1</a><p class="guide-group">A1 air purifier</p><a href="a1-guide.html">A1 operation</a><a href="a1-m1-flash.html">Flash A1 / M1</a><p class="guide-group">Development and maintenance</p><a href="iotcloud-deploy.html">Deploy IotCloud</a><a href="build-deps.html">Build dependencies</a><a href="sources.html">Asset sources</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><p class="guide-language" aria-label="Language"><a href="../firmware-update.html" lang="zh-CN">简体中文</a> · English</p><article class="prose"><h1 id="firmware-updates">Firmware updates</h1>
+<p>Web OTA is available <strong>only after this community firmware is installed</strong>. Phicomm factory firmware and other third-party firmware require a first installation using the appropriate flashing guide.</p>
+<h2 id="check-for-updates-on-the-device">Check for updates on the device</h2>
+<p>Official builds provide domestic and international update sources. Choose a source in the firmware settings and check:</p>
+<ul>
+<li>The UI distinguishes <strong>a new version</strong>, <strong>already up to date</strong> and <strong>network failure</strong>.</li>
+<li>Switch sources and retry if a network request fails.</li>
+<li>Check the model, version and release notes, then explicitly download and install. <strong>Checking never installs an update automatically.</strong></li>
+</ul>
+<p>Custom builds receive their sources through <code>PHICOMM_OTA_CN_BASE_URL</code> and <code>PHICOMM_OTA_GLOBAL_BASE_URL</code>. Without those settings, built-in checking is hidden; manual URL and file uploads remain available.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>China mirror</td>
+<td><code>http://phicomm.fjrcn.cn</code></td>
+</tr>
+<tr>
+<td>International source</td>
+<td><code>http://phicomm.fjrcn.com</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="choose-the-correct-file">Choose the correct file</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.ota.bin.signed</code></td>
+<td>Signed OTA package for web upload and MQTT / URL installation; P-256 / SHA-256 signature verification is mandatory</td>
+</tr>
+<tr>
+<td><code>.ota.bin.raw</code></td>
+<td>Raw image for an explicitly selected unsigned recovery procedure</td>
+</tr>
+<tr>
+<td><code>.all.bin</code></td>
+<td>Full image for wired flashing; <strong>never upload it as OTA</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Use the GitHub archive on the <a href="https://phicomm-io.github.io/#releases">project downloads page</a>, choose your exact product and verify <code>SHA256SUMS</code> from that release. The device verifies the header signature before erasing, and activates the new image only after Flash readback SHA-256 and compatibility checks pass.</p>
+<h2 id="install-a-local-file">Install a local file</h2>
+<p>Online demos use simulated data. On a real device:</p>
+<ol>
+<li>Open its firmware update page.</li>
+<li>Select and upload the verified <code>.ota.bin.signed</code> file.</li>
+<li>Keep power connected throughout writing and the automatic reboot.</li>
+<li>Reopen the WebUI and check the running version.</li>
+</ol>
+<p>A first transition from older firmware may require <code>.ota.bin.raw</code>. New firmware accepts it after selecting <strong>Allow unsigned firmware</strong>, without a second confirmation dialog.</p>
+<h2 id="recovery">Recovery</h2>
+<p>If the WebUI is reachable, check the file, model, version and network, then retry. If the device cannot boot, use the corresponding wired recovery guide: <a href="tc1-flash.html">TC1</a>, <a href="a1-m1-flash.html">M1 / A1</a>. Normal OTA updates do not require opening the device.</p></article><div class="guide-pager"><a href="flash-prep.html">Previous<b>Before flashing</b></a><a class="next" href="mqtt-link.html">Next<b>MQTT and automation</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p>Community-maintained, not affiliated with the manufacturer. Check the documentation for your release. The firmware repository has no single license covering all code.</p></div><div><b>Documentation</b><ul><li><a href="quick-start.html">Quick start</a></li><li><a href="faq.html">Troubleshooting</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>Source</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware">Firmware</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt">MQTT platform</a></li></ul></div></div></footer><script src="../../site.js"></script></body></html>

@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Image / tool provenance and checksums"><title>Asset sources · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../../style.css"><script src="../../theme.js"></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="wrap"><a class="brand" href="../../"><span class="mark">P</span><span class="word"><b>PHICOMM COMMUNITY</b><span>Community firmware</span></span></a><nav class="site-nav" aria-label="Main navigation"><a href="../../#devices">Devices</a><a href="../../#features">Features</a><a href="../../#demos">Demos</a><a href="../../#docs">Documentation</a><a href="../../#releases">Downloads</a></nav><div class="prefs"><label class="sr" for="themePick">Theme</label><select id="themePick"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="Documentation navigation"><p class="guide-group">Getting started</p><a href="quick-start.html">Quick start</a><a href="flash-prep.html">Before flashing</a><a href="firmware-update.html">Firmware updates</a><a href="mqtt-link.html">MQTT and automation</a><a href="faq.html">Troubleshooting</a><p class="guide-group">TC1 power strip</p><a href="tc1-guide.html">TC1 operation</a><a href="tc1-flash.html">Flash TC1</a><p class="guide-group">M1 air quality monitor</p><a href="m1-guide.html">M1 operation</a><a href="a1-m1-flash.html">Flash A1 / M1</a><p class="guide-group">A1 air purifier</p><a href="a1-guide.html">A1 operation</a><a href="a1-m1-flash.html">Flash A1 / M1</a><p class="guide-group">Development and maintenance</p><a href="iotcloud-deploy.html">Deploy IotCloud</a><a href="build-deps.html">Build dependencies</a><a href="sources.html" aria-current="page">Asset sources</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><p class="guide-language" aria-label="Language"><a href="../sources.html" lang="zh-CN">简体中文</a> · English</p><article class="prose"><h1 id="asset-sources">Asset sources</h1>
+<p>Guide images and tools are hosted under <code>guides/assets/</code>. <a href="../assets/SHA256SUMS">SHA256SUMS</a> lists their checksums.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>images/emw3080-pins.png</code></td>
+<td><a href="https://docs.mxchip.com/img/zh/1631842737419-34af0113-6807-499a-9ff9-129040293369.png">MXCHIP EMW3080 pin diagram</a>; original content retained, transparent background changed to white</td>
+</tr>
+<tr>
+<td><code>images/emw3080-swd-pins.png</code></td>
+<td>SWD pin diagram from the <a href="https://docs.mxchip.com/zh/foiwqd8gbgh23xu2/bwyo0fs5t2rquekz/antua5wkt8m3qx7l/lqdz2h5zpp117imt.html">official EMW3080 flashing guide</a></td>
+</tr>
+<tr>
+<td><code>images/tc1-a1-module.png</code>, <code>images/tc1-a1-test-points.png</code></td>
+<td>User-provided annotated TC1 A1 module / factory test-point images</td>
+</tr>
+<tr>
+<td><code>images/a1-factory-test-points.png</code></td>
+<td>User-provided annotated A1 purifier factory test-point photo</td>
+</tr>
+<tr>
+<td><code>images/jlink-swd.png</code></td>
+<td><a href="https://www.segger.com/fileadmin/images/products/J-Link/Technology/Interface_Description/181129_SWD.svg">Official SEGGER SWD diagram</a>, converted to PNG on white</td>
+</tr>
+<tr>
+<td><code>images/flashplus-config.png</code></td>
+<td>Configuration crop from page 2 of the <a href="https://github.com/IoTDevice/phicomm_tc1_a1/blob/master/工具和文档/EMW3031说明文档_flashplus.pdf">EMW3031 / FlashPlus manual</a>. Used only for chip / Flash identification; use this project's erase and verification instructions</td>
+</tr>
+<tr>
+<td><code>tools/FlashPlus_v1.0.10.msi</code></td>
+<td>Marvell FlashPlus v1.0.10 from the <a href="https://github.com/IoTDevice/phicomm_tc1_a1/blob/master/工具和文档/FlashPlus_v1.0.10.msi">IoTDevice mirror</a>, unmodified installer</td>
+</tr>
+</tbody>
+</table>
+<p>Images and third-party tools remain copyrighted by their authors and vendors; hosting copies does not change their licenses. FlashPlus is not part of this project's firmware source. The EMW3031 datasheet restricts reproduction of its illustrations, so the guide links to it instead.</p>
+<p>See <a href="build-deps.html">Build dependencies</a> for toolchains and SDKs.</p></article><div class="guide-pager"><a href="build-deps.html">Previous<b>Build dependencies</b></a><a class="next" href="release-log.html">Next<b>Release Log</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p>Community-maintained, not affiliated with the manufacturer. Check the documentation for your release. The firmware repository has no single license covering all code.</p></div><div><b>Documentation</b><ul><li><a href="quick-start.html">Quick start</a></li><li><a href="faq.html">Troubleshooting</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>Source</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware">Firmware</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt">MQTT platform</a></li></ul></div></div></footer><script src="../../site.js"></script></body></html>
