@@ -1,0 +1,60 @@
+name: Publish Wiki and MQTT release demo
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: public-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check latest stable MQTT release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/check_mqtt_release.py
+      - name: Download pinned frontend lock
+        if: steps.release.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: gh release download "$RELEASE_TAG" --repo phicomm-io/phicomm-community-mqtt --pattern frontend.lock.json --dir "$RUNNER_TEMP/mqtt-release"
+      - name: Verify frontend and update platform demo
+        if: steps.release.outputs.tag != ''
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_COMMIT: ${{ steps.release.outputs.commit }}
+        run: |
+          python3 tools/frontend_release.py --lock "$RUNNER_TEMP/mqtt-release/frontend.lock.json" --output "$RUNNER_TEMP/mqtt-frontend"
+          python3 tools/update_wiki_demo.py --site . --bundle "$RUNNER_TEMP/mqtt-frontend" --tag "$RELEASE_TAG" --commit "$RELEASE_COMMIT"
+          git config user.name 'Phicomm release'
+          git config user.email 'release@users.noreply.github.com'
+          git add demos/platform
+          if ! git diff --cached --quiet; then
+            git commit -m "Update MQTT demo for $RELEASE_TAG"
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - name: Stage public site only
+        run: |
+          mkdir "$RUNNER_TEMP/public-site"
+          cp -a index.html style.css site.js theme.js releases.js .nojekyll demos guides releases "$RUNNER_TEMP/public-site/"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/public-site
+      - uses: actions/deploy-pages@v4
+        id: deployment
