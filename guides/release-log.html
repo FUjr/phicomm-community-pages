@@ -1,0 +1,73 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="各版本发布说明"><title>Release Log · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="m1-flash.html">刷机</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-flash.html">刷机</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html" aria-current="page">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>Release Log</h1>
+<p>发布前在本 Wiki 编辑对应版本章节，再运行快照工具并提交到源码仓库。</p>
+<h2>v0.9.5</h2>
+<ul>
+<li>统一三个固件的 WebUI 设计与中英文交互，完善状态、平均读数、定时任务和按键映射。</li>
+<li>更新 TMCP 通信、绑定与 A1/M1 联动；管理平台复用设备界面，兼容 Legacy 设备名称和计量读数。</li>
+<li>改进 MQTT 报文处理、回执与连接状态指示，补充主机场景和浏览器回归验证。</li>
+<li>增加按构建宏配置的国内外 OTA 来源、异步版本检查及签名固件下载入口。</li>
+<li>建立 Cloudflare R2/Worker 发布源与境内 HTTP 缓存镜像；保留手动文件和 URL 升级。</li>
+<li>发布说明由 Wiki 维护并在打 tag 前冻结，发布流程校验快照、固件校验和及镜像下载。</li>
+<li>新增项目介绍、三个固件及管理平台交互演示、最新版下载和历史版本归档。</li>
+</ul>
+<h2>v0.9.4</h2>
+<p>三型号签名 OTA 固件 v0.9.4，基于 main 提交 d50e937；与 v0.9.3 使用相同实现，本次更新版本号并由 CI 重新构建、签名。</p>
+<ul>
+<li><code>.ota.bin.signed</code>：用于 MQTT/URL 和默认 Web 上传，强制验证 P-256/SHA-256 签名。</li>
+<li><code>.ota.bin.raw</code>：用于旧固件首次过渡；新 Web 勾选“允许未签名的固件”即可上传，无二次弹窗。</li>
+<li><code>.all.bin</code>：原生完整烧录镜像。</li>
+</ul>
+<p>只有签名、Flash 读回摘要及兼容性检查通过后才启用新镜像。生产私钥位于仓库外，并通过受 v* tag 限制的 GitHub environment 使用。</p>
+<p>v0.9.3 已完成 M1 真机 Web/MQTT 拒绝及升级、重启恢复测试。本次 v0.9.4 未刷写设备；TC1/A1 真机、完整资源峰值及断电测试仍待验收。本版允许重装和降级，直链需直接 HTTP 200 + Content-Length。</p>
+<h2>v0.9.3</h2>
+<p>首个签名 OTA 版本，覆盖 TC1 A1、M1、A1。</p>
+<ul>
+<li><code>.ota.bin.signed</code>：P-256/SHA-256 签名包，用于新固件 Web 默认上传及 MQTT/URL 安装。</li>
+<li><code>.ota.bin.raw</code>：原生 OTA。旧固件首次过渡请通过可信本地 Web 上传；新固件勾选“允许未签名的固件”后即可上传，无二次弹窗。</li>
+<li><code>.all.bin</code>：完整原生烧录镜像，不能把签名外壳交给 bootloader。</li>
+</ul>
+<p>CI 私钥位于仓库外，并只在受 tag 限制的 GitHub 签名环境中使用；仓库只含公钥。设备擦除前验证头部签名，Flash 读回 SHA-256 和兼容性检查通过后才启用镜像。</p>
+<p>M1 真机已验证 raw 过渡、Web raw/signed 上传、MQTT 坏签名/raw 拒绝及 signed 安装和重启恢复。TC1/A1 真机、完整资源峰值及断电/回退仍待验收。本版本允许重装和降级，URL 下载使用直接 HTTP 200 + Content-Length。</p>
+<p>设计与验收记录：localdocs/ota-signed-update-v1.md；实现 PR #26。</p>
+<p>发布后已下载三型号 Release 产物，逐一验证 P-256 签名、签名摘要及 SHA256SUMS。M1 另通过 MQTT 安装了本 Release 的 CI 签名包，重启后运行 0.9.3-d50e93，MQTT 与传感器数据恢复正常。</p>
+<h2>v0.9.2</h2>
+<h2>M1 实机验证通过的可用版本</h2>
+<p>本次将 <strong>v0.9.2</strong> 记录为原装 EMW3080B / MK3080B 模块 M1 的实机验证可用基线。源码为 <code>c1c8f542eb1f61c34fbc12abca5aad681b7ff257</code>（PR #3），固件显示版本为 <code>0.9.2-c1c8f5</code>。</p>
+<h3>本次改动</h3>
+<ul>
+<li>WebUI 首页展示实时空气信息及屏幕亮度，二级菜单管理 Wi-Fi、MQTT、设备、绑定联动、升级和诊断；切换页面保留未保存的输入。</li>
+<li>修正 Wi-Fi 与错误图标的通道映射和熄灭输出：正常连接时 Wi-Fi 常亮、错误标志灭；Wi-Fi 故障时两者同步闪烁；已配置 MQTT 连接异常时 Wi-Fi 常亮、仅错误标志两长两短，未配置 MQTT 不报 MQTT 故障。</li>
+<li>修复 MQTT 空闲超时误断线及 TCP 分包超过短 yield 期限引发的断线，增加错误计数与最近错误诊断。</li>
+</ul>
+<h3>M1 验证记录（2026-10-14）</h3>
+<ul>
+<li>通过设备 Web API 完成 OTA，重启后恢复 Wi-Fi、MQTT 和有效传感器数据。</li>
+<li>真实设备提供温度、湿度、甲醛、PM2.5 四项读数。</li>
+<li>与 phicomm-community-mqtt 平台联调：账号主题自动发现、五项 HA 发现配置、网页亮度命令、设备设置值回执、独立 MQTT 客户端恢复亮度均通过；浏览器未出现页面错误。</li>
+<li>独立 MQTT 客户端连续观察 66 秒，收到 14 次真实传感器上报，无离线事件；Broker 重启后的自动恢复已验证。该观察不代表长期稳定性测试。</li>
+<li>用户已直接确认：短按屏幕亮灭正常；最终图标映射为 <strong>Wi-Fi 常亮、错误标志灭</strong>。</li>
+<li>主机测试、WebUI 测试及三款固件 CI 构建通过。</li>
+</ul>
+<p>实机验证最初使用同功能源码的开发构建（版本显示 <code>0.9.1-da45b9-dirty</code>）；Release 二进制由本标签 CI 构建，下载文件与校验值按本 Release 为准。</p>
+<h3>已知范围</h3>
+<ul>
+<li>Wi-Fi/MQTT 故障闪烁时序通过主机测试，实物故障灯效尚未逐项观察验证。</li>
+<li>实体长按重置、恢复出厂和重置网络尚未实现。</li>
+<li>M1 原屏幕甲醛/PM2.5 彩色指示灯的阈值和手动颜色控制尚无已验证协议，当前不支持。</li>
+<li>本次实机可用结论只针对 M1；A1 空气净化器及 TC1（A1 硬件版本）附件通过构建，不代表本次完成其硬件验证。</li>
+</ul>
+<h3>下载</h3>
+<p>M1 网页升级请选择 <strong>phicomm_m1.ota.bin</strong>，不要上传 <code>.all.bin</code>；按 <code>SHA256SUMS</code> 核对下载文件。升级保留 Wi-Fi、MQTT 与亮度配置。</p>
+<h2>v0.9.1</h2>
+<h2>What's Changed</h2>
+<ul>
+<li>treewide: archive TC1 SDK and unify firmware build entry points by @FUjr in https://github.com/FUjr/phicomm-community-firmware/pull/1</li>
+<li>feat: account-scoped MQTT and Git tag firmware versions by @FUjr in https://github.com/FUjr/phicomm-community-firmware/pull/2</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@FUjr made their first contribution in https://github.com/FUjr/phicomm-community-firmware/pull/1</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/FUjr/phicomm-community-firmware/compare/0.0.0...v0.9.1</p>
+<h2>v0.9.0</h2>
+<p><strong>Full Changelog</strong>: https://github.com/FUjr/phicomm-community-firmware/commits/v0.9.0</p></article><div class="guide-pager"><a href="sources.html">上一页<b>资源来源</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/FUjr/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/FUjr/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

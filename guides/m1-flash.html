@@ -1,0 +1,155 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EMW3080B：保留 Bootloader 的首刷"><title>刷机 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="m1-flash.html" aria-current="page">刷机</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-flash.html">刷机</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>M1 刷机</h1>
+<p><strong>仅适用于原装 EMW3080B / MK3080B 模块的 M1。</strong> 本页介绍<strong>保留原 Bootloader</strong> 的首刷流程，要求能够进入庆科 Bootloader，且命令菜单和分区布局与下文一致。</p>
+<p>先阅读<a href="flash-prep.html">刷机前准备</a>（供电、接线、进入下载模式）——本页只写 M1 特有的步骤。</p>
+<blockquote>
+<p>EMW3080B 的模块接口在<a href="flash-prep.html#emw3080b模块接口m1--a1">刷机前准备</a>中统一说明。<strong>A1 空气净化器请使用<a href="a1-flash.html">其对应流程</a>。</strong></p>
+</blockquote>
+<h2>1. 串口与分区确认</h2>
+<p>按准备页接线与供电要求进入 Bootloader。选择 USB-TTL 对应的串口，设置 <strong>921600、8N1、无软硬件流控</strong>。</p>
+<p>输入 <code>?</code> 确认菜单：</p>
+<pre><code class="language-text">1:FWUPDATE     Update MiCO
+2:USERUPDATE   Update user APP
+5:MEMORYMAP
+6:BOOT
+</code></pre>
+<p>输入 <code>5</code>，核对以下关键分区。<strong>地址是 Flash 偏移，不是 CPU 映射地址</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>分区</th>
+<th>起始地址</th>
+<th>长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>Bootloader</td>
+<td><code>0x00000000</code></td>
+<td><code>0x00013000</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>MiCO Kernel</td>
+<td><code>0x00013000</code></td>
+<td><code>0x000b5000</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>User Application</td>
+<td><code>0x00088000</code></td>
+<td><code>0x00040000</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>PARAMETER1</td>
+<td><code>0x000c8000</code></td>
+<td><code>0x00004000</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>参数备份（菜单同样显示 PARAMETER1）</td>
+<td><code>0x000cc000</code></td>
+<td><code>0x00004000</code></td>
+</tr>
+</tbody>
+</table>
+<p>MiCO 区域包含用户应用，应用相对 MiCO 起点的偏移为 <code>0x75000</code>。<strong>若菜单或布局不同，停止本流程。</strong></p>
+<p>本方法不写 Bootloader、参数、ATE、OTA Storage 和 USER Storage；但覆盖内核或应用仍会替换原固件，<strong>不能以保留这些区域代替原厂备份</strong>。</p>
+<h2>2. 准备正确的文件</h2>
+<p>下载同一版本的 M1 固件与 <code>SHA256SUMS</code>，校验所用文件。</p>
+<blockquote>
+<p><strong>不要将 <code>.all.bin</code> 发送给 <code>1</code> 或 <code>2</code>，也不要将未经转换的 <code>.ota.bin</code> 发送给 <code>2</code>。</strong> <code>.all.bin</code> 含 Bootloader 等区域，只用于完整地址烧录流程。</p>
+</blockquote>
+<p>本项目当前 M1 <code>.ota.bin</code> 的结构为：内核及填充 <code>0x75000</code> 字节 + 用户应用 + 末尾 16 字节 MD5。</p>
+<ul>
+<li>串口 <code>FWUPDATE</code> 使用<strong>去掉 MD5 尾部</strong>后的连续内核与应用数据。</li>
+<li><code>USERUPDATE</code> 使用带 8 字节长度/CRC 头的 <code>.usr.bin</code>。</li>
+</ul>
+<p>若 Release 未单独提供 <code>.usr.bin</code>，可从校验通过的 <code>.ota.bin</code> 提取。下面在固件所在目录运行，检查长度、MD5、应用魔数、ABI 和 CRC 后才生成两个串口文件：</p>
+<pre><code class="language-sh">python3 - &lt;&lt;'PY'
+from pathlib import Path
+import binascii
+import hashlib
+import struct
+
+image = Path('phicomm_m1.ota.bin').read_bytes()
+offset = 0x75000
+assert offset + 144 &lt;= len(image) &lt;= offset + 0x40000 + 16, '镜像长度异常'
+assert hashlib.md5(image[:-16]).digest() == image[-16:], 'OTA MD5 不符'
+length, reserved, crc, magic, stack, abi = struct.unpack_from('&lt;IHHIII', image, offset)
+assert 120 &lt;= length &lt;= 0x40000 - 8, '应用长度异常'
+assert len(image) == offset + 8 + length + 16, '应用边界异常'
+assert magic == 0xc89346 and abi == 3, '应用魔数或 ABI 不符'
+user = image[offset:-16]
+assert reserved == crc == binascii.crc_hqx(user[8:], 0), '应用 CRC 不符'
+assert b'PHICOMM_M1_EMW3080\0' in user, '非 M1 镜像'
+Path('m1-fw.serial.bin').write_bytes(image[:-16])
+Path('m1-user.serial.bin').write_bytes(user)
+print('内核+应用:', len(image) - 16, 'bytes')
+print('用户应用:', len(user), 'bytes; SHA256:', hashlib.sha256(user).hexdigest())
+PY
+</code></pre>
+<p>生成后<strong>记录脚本输出的文件长度</strong>，发送完成时核对设备显示的 <code>Size</code>。文件长度与校验值随固件变化，请使用所下载文件的实际结果。</p>
+<h2>3. 发送与回读</h2>
+<ol>
+<li>
+<p>在 <code>MXCHIP&gt;</code> 输入 <code>1</code> 并回车，等待 <code>Waiting for the file to be sent</code> / <code>C</code>，使用 <strong>YMODEM（CRC、1 KiB 数据包）</strong>发送 <code>m1-fw.serial.bin</code>。建议使用支持包间隔的发送工具，<strong>将数据包间隔设为 50 ms</strong>。写入是否正确仍需通过回读校验确认。</p>
+</li>
+<li>
+<p>等待设备打印 <code>Successfully!</code>，核对 <code>Size</code>。</p>
+</li>
+</ol>
+<blockquote>
+<p>该提示只代表 Bootloader 报告接收/写入完成，<strong>不能据此宣布应用可启动</strong>。</p>
+</blockquote>
+<ol>
+<li>输入 <code>2 -r</code>，使用串口工具的 <strong>Receive YMODEM</strong> 接收用户分区，保存为 <code>USER.bin</code>。回读文件应为整个 <code>0x40000</code> 分区，即 <strong>262144 bytes</strong>。</li>
+</ol>
+<p>Linux 脚本需要独占串口时，先用 <strong>Ctrl-A、Q</strong> 退出 minicom，再运行脚本；<strong>不要让两个程序同时读写同一端口。</strong></p>
+<ol>
+<li>将回读文件前 <code>m1-user.serial.bin</code> 长度的内容与期望应用逐字节比较，同时验证应用 CRC：</li>
+</ol>
+<p>```sh
+   python3 - &lt;&lt;'PY'
+   from pathlib import Path
+   import binascii
+   import hashlib
+   import struct</p>
+<p>expected = Path('m1-user.serial.bin').read_bytes()
+   readback = Path('USER.bin').read_bytes()
+   assert len(readback) == 0x40000, '用户分区回读长度不符'
+   actual = readback[:len(expected)]
+   assert actual == expected, '应用回读不一致，不要启动；重新写入并回读'
+   length, reserved, crc = struct.unpack_from('&lt;IHH', actual)
+   assert length + 8 == len(actual), '应用长度不符'
+   assert reserved == crc == binascii.crc_hqx(actual[8:], 0), '应用 CRC 不符'
+   print('应用逐字节一致，CRC 通过，SHA256:', hashlib.sha256(actual).hexdigest())
+   PY
+   ```</p>
+<ol>
+<li>确认回读一致后输入 <code>6</code> 启动。正常断电重启前<strong>解除 BOOT 接地</strong>，按准备页要求恢复原接线。</li>
+</ol>
+<h2>4. <code>user firmware invalid [-3]</code> 恢复</h2>
+<p><code>user firmware invalid [-3]</code> 表示<strong>用户应用 CRC 校验失败</strong>。按以下步骤恢复：</p>
+<ol>
+<li>进入 Bootloader，核对固件校验和，并重新准备同一固件的应用文件。</li>
+<li>输入 <code>2</code>，通过 YMODEM 发送 <code>m1-user.serial.bin</code>；也可使用已与提取结果核对一致的 <code>phicomm_m1.usr.bin</code>。设置数据包间隔为 <strong>50 ms</strong>。</li>
+<li>等待 <code>Successfully!</code>，再执行 <code>2 -r</code>，按照上文脚本比较回读内容。</li>
+<li>回读不一致时，检查供电、共地、导线、串口占用及 USB-TTL 转换器，排除问题后重新写入。<strong>保持 Bootloader 和参数分区，不要通过整片擦除来试错。</strong></li>
+<li>回读与应用文件完全一致后，输入 <code>6</code> 启动。</li>
+</ol>
+<h2>5. 如何判断应用确实运行</h2>
+<p><code>Booting.......</code> 表示 Bootloader 正在启动应用。应用运行后：</p>
+<ul>
+<li>用户串口使用 <strong>115200、8N1、无流控</strong>；<strong>保持 921600 会看到乱码。</strong></li>
+<li>切换至 115200 后，可在串口工具的十六进制显示模式下查看每约 5 秒发送的 12 字节传感器查询帧：</li>
+</ul>
+<pre><code class="language-text">23 01 00 00 00 00 00 00 00 00 00 21
+</code></pre>
+<p>看到周期性查询帧说明应用正在运行。</p>
+<h2>6. 配网</h2>
+<p>解除 BOOT 接地并恢复原接线后，连接 <code>M1-AP-&lt;MAC后六位&gt;</code> 热点，访问 <code>http://192.168.0.1/</code> 完成配网；随后检查网页中的传感器读数。需要 MQTT 时，再填写 Broker 并检查连接状态。</p>
+<h2>之后</h2>
+<p>日常操作与指示灯见 <a href="m1-guide.html">M1 功能与操作</a>，后续升级用网页 OTA，见<a href="firmware-update.html">固件更新</a>。</p></article><div class="guide-pager"><a href="m1-guide.html">上一页<b>功能与操作</b></a><a class="next" href="a1-guide.html">下一页<b>功能与操作</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/FUjr/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/FUjr/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

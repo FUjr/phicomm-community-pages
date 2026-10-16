@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="读数、屏幕亮度、指示灯与恢复"><title>功能与操作 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html" aria-current="page">功能与操作</a><a href="m1-flash.html">刷机</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-flash.html">刷机</a><p class="guide-group">开发与维护</p><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>M1 空气检测仪 功能与操作</h1>
+<p>M1 固件提供 PM2.5、甲醛、温湿度读数，屏幕亮度设置，并可作为 A1 空气净化器的联动数据源。本文介绍安装完成后的日常操作；首次安装见 <a href="m1-flash.html">M1 刷机</a>。</p>
+<h2>首页读数</h2>
+<p>首页展示实时空气质量信息：</p>
+<table>
+<thead>
+<tr>
+<th>读数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PM2.5</strong></td>
+<td>颗粒物浓度</td>
+</tr>
+<tr>
+<td><strong>甲醛</strong></td>
+<td>甲醛浓度</td>
+</tr>
+<tr>
+<td><strong>温度</strong></td>
+<td>环境温度</td>
+</tr>
+<tr>
+<td><strong>湿度</strong></td>
+<td>相对湿度</td>
+</tr>
+</tbody>
+</table>
+<p>界面按读数等级给出颜色与文字判定（优 / 良 / 差等）。</p>
+<h2>屏幕亮度</h2>
+<p>屏幕亮度可在网页中调整，设置会保存到设备并进行回执确认。也可以通过 MQTT 命令调整亮度，独立 MQTT 客户端修改后设备会回传设置值。</p>
+<h2>Wi-Fi 图标与错误图标</h2>
+<p>M1 使用原面板上的两个图标提示网络状态，<strong>它们是独立输出</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>Wi-Fi 图标</th>
+<th>错误图标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正常</td>
+<td>常亮</td>
+<td>灭</td>
+</tr>
+<tr>
+<td>Wi-Fi 故障</td>
+<td>闪烁</td>
+<td>闪烁</td>
+</tr>
+<tr>
+<td>已配置 MQTT 连接异常</td>
+<td>常亮</td>
+<td>两长两短</td>
+</tr>
+</tbody>
+</table>
+<p>关闭输出时对应 GPIO 切换为低电平。<strong>未配置 MQTT 不报 MQTT 故障。</strong></p>
+<blockquote>
+<p>M1 原屏幕的甲醛 / PM2.5 彩色指示灯的阈值和手动颜色控制尚无已验证协议，当前不支持。</p>
+</blockquote>
+<h2>按键与恢复</h2>
+<p>M1 使用<strong>原面板的 <code>0x18</code> 长按事件</strong>，发送固定 <code>0x16</code> ACK，单次启动去重后清除 Wi-Fi 和网页密码。</p>
+<p>M1 不支持像 TC1 / A1 那样精确的 5 / 10 秒分段恢复手势，也<strong>没有自定义按键映射</strong>——不要套用 A1/TC1 的按键设置。硬件恢复的详细步骤见 <a href="m1-flash.html">M1 刷机</a>。</p>
+<p>完整重置可以在 M1 的 WebUI 中执行。</p>
+<h2>作为 A1 的联动数据源</h2>
+<p>M1 只检测、上报并应答<strong>已授权</strong>的 A1，不主动控制净化器，也不主动轮询 A1。</p>
+<ul>
+<li>在 M1 的绑定设置中添加 <code>A1_MAC:M1_MAC</code> 配对标识。</li>
+<li>许可列表最多八个并去重。</li>
+<li>M1 会拒绝联动通道上的配置读写、解绑和传感器推送。</li>
+</ul>
+<p>绑定与联动规则见 <a href="mqtt-link.html#a1-与-m1-联动">MQTT 与联动</a>。</p>
+<h2>MQTT</h2>
+<p>M1 固定使用 <strong>TMCP（v2）</strong> 主题，不提供 Legacy 模式选择。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p></article><div class="guide-pager"><a href="tc1-flash.html">上一页<b>刷机</b></a><a class="next" href="m1-flash.html">下一页<b>刷机</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/FUjr/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/FUjr/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

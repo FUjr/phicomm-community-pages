@@ -1,0 +1,62 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="工具链、SDK 归档与本地构建"><title>构建依赖 · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="m1-flash.html">刷机</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-flash.html">刷机</a><p class="guide-group">开发与维护</p><a href="build-deps.html" aria-current="page">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html">Release Log</a></nav><main class="guide-main" id="main"><article class="prose"><h1>构建依赖</h1>
+<p>本页说明如何获取工具链与 SDK，以及如何用本地副本构建三款固件。只使用预编译固件的用户不需要这一页，请直接<a href="https://fujr.github.io/phicomm-community-pages/#releases">下载固件</a>。</p>
+<p>在 <a href="https://github.com/FUjr/phicomm-community-firmware/releases/tag/0.0.0">0.0.0 构建依赖归档</a> 下载工具链和 SDK，并使用随包 <code>SHA256SUMS</code> 校验：</p>
+<pre><code class="language-sh">sha256sum -c SHA256SUMS
+</code></pre>
+<h2>依赖文件</h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>用途与来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/FUjr/phicomm-community-firmware/releases/download/0.0.0/gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2">gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2</a></td>
+<td>三型号使用的 Linux x86_64 ARM GCC 5.4.1，<a href="https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update">原下载页</a></td>
+</tr>
+<tr>
+<td><a href="https://github.com/FUjr/phicomm-community-firmware/releases/download/0.0.0/gcc-arm-none-eabi-5_4-2016q2-20160622-src.tar.bz2">gcc-arm-none-eabi-5_4-2016q2-20160622-src.tar.bz2</a></td>
+<td>同版本工具链对应源码及构建脚本，保留原许可证</td>
+</tr>
+<tr>
+<td><a href="https://github.com/FUjr/phicomm-community-firmware/releases/download/0.0.0/Python-2.7.18.tgz">Python-2.7.18.tgz</a></td>
+<td>旧 SDK 构建所需 Python 2.7.18 源码，<a href="https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz">Python 官方下载</a></td>
+</tr>
+<tr>
+<td><a href="https://github.com/FUjr/phicomm-community-firmware/releases/download/0.0.0/mico-os-3.6.4.bundle">mico-os-3.6.4.bundle</a></td>
+<td>M1/A1 SDK 的 Git 副本，<a href="https://github.com/MXCHIP/mico-os/tree/6c465211d3ff8797cd835e400ec54a06530dd476">MXCHIP/mico-os</a>，固定提交 <code>6c465211d3ff8797cd835e400ec54a06530dd476</code>，不含本项目补丁</td>
+</tr>
+<tr>
+<td><a href="https://github.com/FUjr/phicomm-community-firmware/releases/download/0.0.0/tc1-mico-sdk.tar.gz">tc1-mico-sdk.tar.gz</a></td>
+<td>TC1 使用的 MiCO 3.5.4 SDK 与第三方许可证；构建时校验并解压到 <code>build/tc1-sdk/</code></td>
+</tr>
+</tbody>
+</table>
+<p>工具链压缩包保留随包许可证；GCC 等组件的对应源码同时提供。Python 使用随源码的 PSF 许可证。MiCO SDK 包含多个不同授权的源码及二进制组件，按原文件声明适用，不采用本项目统一授权替代。原版权与许可证保留在归档内。</p>
+<h2>准备本地副本</h2>
+<p>创建有写权限的共享工具目录，将 GCC 压缩包解压到该目录，例如 <code>/opt/phicomm-tools</code>；将 Python 源码解压、配置并安装到该目录的 <code>python2/</code>：</p>
+<pre><code class="language-sh">tar -xjf gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 -C /opt/phicomm-tools
+tar -xzf Python-2.7.18.tgz
+cd Python-2.7.18
+./configure --prefix=/opt/phicomm-tools/python2
+make -j4
+make install
+</code></pre>
+<p>M1/A1 SDK <strong>必须使用 Git 副本</strong>，以保留构建脚本检查的提交身份。在项目根目录分别恢复，避免两型号补丁混用：</p>
+<pre><code class="language-sh">mkdir -p build/m1-sdk build/a1-sdk
+git clone /下载路径/mico-os-3.6.4.bundle build/m1-sdk/mico-os
+git clone /下载路径/mico-os-3.6.4.bundle build/a1-sdk/mico-os
+git -C build/m1-sdk/mico-os rev-parse HEAD
+</code></pre>
+<p>输出应为上述固定提交。</p>
+<h2>构建</h2>
+<p>在项目根目录运行：</p>
+<pre><code class="language-sh">TC1_TOOLS_DIR=/opt/phicomm-tools ./TC1/build.sh
+M1_TOOLS_DIR=/opt/phicomm-tools ./M1/build.sh
+A1_TOOLS_DIR=/opt/phicomm-tools ./A1/build.sh
+</code></pre>
+<p>脚本会应用仓库内各产品的 SDK 补丁。<strong>工具目录已有正确版本的 GCC 与 Python 时，不再下载它们。</strong></p>
+<p>仍需 Linux 系统的 <code>make</code>、Git、Perl、Python 3、bzip2、curl、C 编译环境及相关系统库；安装命令见<a href="https://github.com/FUjr/phicomm-community-firmware#readme">项目构建说明</a>。</p>
+<p>TC1 支持用 <code>TC1_SDK_ARCHIVE</code> 指定已下载的 <code>tc1-mico-sdk.tar.gz</code>。在项目根目录执行 <code>./build.sh</code> 可依次构建三个型号。</p></article><div class="guide-pager"><a href="a1-flash.html">上一页<b>刷机</b></a><a class="next" href="sources.html">下一页<b>资源来源</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/FUjr/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/FUjr/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
