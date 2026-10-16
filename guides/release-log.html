@@ -1,5 +1,14 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="各版本发布说明"><title>Release Log · PHICOMM COMMUNITY</title><link rel="stylesheet" href="../style.css"><script src="../theme.js"></script></head><body><a class="skip" href="#main">跳到主要内容</a><header class="site-header"><div class="wrap"><a class="brand" href=".././"><span class="mark" aria-hidden="true">斐</span><span class="word"><b>PHICOMM COMMUNITY</b><span>社区固件</span></span></a><nav class="site-nav" aria-label="主导航"><a href="../#devices">设备</a><a href="../#features">功能</a><a href="../#demos">在线演示</a><a href="../#docs">文档</a><a href="../#releases">下载</a></nav><div class="prefs"><label class="sr" for="themePick">主题</label><select id="themePick"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div></header><div class="guide-layout"><nav class="guide-nav" aria-label="文档导航"><p class="guide-group">开始使用</p><a href="quick-start.html">快速开始</a><a href="flash-prep.html">刷机前准备</a><a href="firmware-update.html">固件更新</a><a href="mqtt-link.html">MQTT 与联动</a><a href="faq.html">故障排查</a><p class="guide-group">TC1 智能排插</p><a href="tc1-guide.html">功能与操作</a><a href="tc1-flash.html">刷机</a><p class="guide-group">M1 空气检测仪</p><a href="m1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">A1 空气净化器</p><a href="a1-guide.html">功能与操作</a><a href="a1-m1-flash.html">刷机：J-Link / Bootloader</a><p class="guide-group">开发与维护</p><a href="iotcloud-deploy.html">IotCloud 部署</a><a href="build-deps.html">构建依赖</a><a href="sources.html">资源来源</a><a href="release-log.html" aria-current="page">Release Log</a></nav><main class="guide-main" id="main"><p class="guide-language" aria-label="Language">简体中文 · <a href="en/release-log.html" lang="en">English</a></p><article class="prose"><h1 id="release-log">Release Log</h1>
 <p>发布前在本 Wiki 编辑对应版本章节，再运行快照工具并提交到源码仓库。</p>
+<h2 id="v096">v0.9.6</h2>
+<ul>
+<li>新增设备直接从 GitHub Pages HTTPS 检查版本、读取发布说明和下载签名 OTA；保留境内、境外 HTTP 镜像，网页提供三个来源按钮。</li>
+<li>下载支持终止，DNS、连接和网络收发有超时限制。更新失败或取消后恢复日常服务；提交启动镜像后不能终止，重新下载从头开始。</li>
+<li>更新期间释放 A1/M1 联动线程及动态资源，MQTT/HTTP 保留升级状态与取消响应；日志字典节省 3584 B RAM，TC1 HTTP 栈缩减约 12 KiB。</li>
+<li>修复 TC1 签名 OTA 的启动槽校验，保留固件签名、型号及 Flash 读回校验。HTTPS 不校验证书，固件验签保持强制。</li>
+<li>汇总 v0.9.5 后主分支改进：A1 面板、风速环与触摸反馈修正，A1/M1 稳定性与关键线程看门狗，独立前端版本锁定、IotCloud 授权连接和中英文指南。</li>
+<li>A1、M1、TC1 开发候选已通过普通负载 GitHub HTTPS 签名更新、重启、发布说明、取消、错误签名/篡改/截断及失败恢复验证。持续六客户端压力更新尚未通过完整验收：TC1 下载可中断，A1/M1 缺少完整成功提交证据。更新期间应减少并发访问；掉电及完整资源水位测试不在本次验收范围。</li>
+</ul>
 <h2 id="v095">v0.9.5</h2>
 <ul>
 <li>统一三个固件的 WebUI 设计与中英文交互，完善状态、平均读数、定时任务和按键映射。</li>

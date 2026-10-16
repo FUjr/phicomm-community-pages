@@ -4,8 +4,8 @@
 (()=>{
 const create=model=>{
  const state={name:'演示设备',model,device_id:{tc1:'aabbccddee01',m1:'aabbccddee02',a1:'aabbccddee03'}[model],version:'演示',ip:'192.0.2.10',ssid:'Demo Wi-Fi',wifi_connected:true,mqtt_connected:true,mqtt_status:'ready',mqtt_host:'demo.invalid',mqtt_user:'demo',mqtt_port:1883,mqtt_topic_mode:'tmcp',mqtt_protocol:'tmcp',brightness_requested:3,brightness:192,red:80,green:200,blue:120,speed:60,percentage:60,applied_speed:60,requested_speed:60,fan_on:true,fan_ready:true,panel_ready:true,light_on:true,sensor_received:true,sensor_valid:true,age_ms:200,temperature:25,humidity:48,formaldehyde:.025,pm25:18,time_synced:true,timezone_minutes:480,ntp_host:'pool.ntp.org',ntp_status:'synced',ntp_synced:true,ota_progress:0,ota_state:'idle',socket_names:['台灯','显示器','音箱','充电器','风扇','备用'],socket_states:[true,true,false,true,false,false],report_seconds:5,powerCoefficientX100:1710,free_memory:48000,uptime_seconds:3600,power_watts:36,energy_kwh:.28,led_enabled:true};
- const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['fan.set','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
- const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[]},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{enabled:0,mode:0,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['cn','global']},'ota.check.get':{state:'idle',available:false}};
+ const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install','ota.notes','ota.notes.get','ota.status.get',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['fan.set','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
+ const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[]},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{enabled:0,mode:0,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['github','cn','global']},'ota.check.get':{state:'idle',available:false}};
  function command(action,p={}){
   if(action==='status.get')return structuredClone(state);
   if(action==='capabilities.get')return {model,actions};
@@ -22,6 +22,7 @@ const create=model=>{
   if(action==='schedules.enable'){const item=fixtures['schedules.get'].items.find(x=>x.id===p.id);if(item)item.enabled=p.enabled;}
   if(action==='buttons.set'){const list=fixtures['buttons.get'].items;const i=list.findIndex(x=>x.key===p.key&&x.clicks===p.clicks&&x.seconds===p.seconds);if(i>=0)list.splice(i,1);if(p.action!=='none')list.push({...p});}
   if(action.endsWith('.set')&&fixtures[action.replace(/\.set$/,'.get')])fixtures[action.replace(/\.set$/,'.get')]={...fixtures[action.replace(/\.set$/,'.get')],...p};
+  if(action==='ota.notes')fixtures['ota.notes.get']={state:'ready',text:'Demo release notes',offset:0,next:18,total:18,busy:false};
   if(action==='ota.check')fixtures['ota.check.get']={state:'up_to_date',version:'演示',source:p.source,available:false};
   if(action.startsWith('ota.')&&['ota.start','ota.install'].includes(action))state.ota_state='idle';
   return structuredClone(fixtures[action]||{});
@@ -399,8 +400,8 @@ const D={
 'import.waiting':['Waiting for configuration…','正在等待配置…'],
 'import.received':['Configuration prefilled. Review the MQTT Host, port and account below, then save.','配置已预填。请核对下方 MQTT Host、端口与账号，再点击保存。'],
 'import.no_opener':['The platform window is unavailable. Keep it open and restart the transfer.','无法连接平台窗口，请保持平台页面打开并重新发起传递。'],
-'fw.online':['Online updates','在线更新'],'fw.check':['Check for updates','检查更新'],'fw.install_online':['Download and install','下载并安装'],'fw.notes':['Release notes','发布说明'],
-'fw.source_cn':['Mainland China mirror','境内镜像'],'fw.source_global':['Global server','境外服务器'],
+'fw.cancel':['Cancel download','终止下载'],'fw.cancelling':['Cancelling; services will resume shortly.','正在终止，稍后恢复正常服务。'],'fw.online':['Online updates','在线更新'],'fw.check':['Check for updates','检查更新'],'fw.install_online':['Download and install','下载并安装'],'fw.notes':['Release notes','发布说明'],
+'fw.sources_help':['Choose a source to check its latest version.','选择更新来源，检查最新版本。'],'fw.source_github':['GitHub Pages (HTTPS)','GitHub Pages（HTTPS）'],'fw.source_cn':['China mirror (HTTP)','境内镜像（HTTP）'],'fw.source_global':['Global mirror (HTTP)','境外镜像（HTTP）'],
 'fw.check_idle':['Choose a source and check','选择来源后检查更新'],'fw.check_checking':['Checking…','正在检查…'],'fw.check_available':['Update available','发现新版本'],'fw.check_up_to_date':['Already up to date','当前已是最新版本'],'fw.check_failed':['Update check failed; try another source','检查失败，请重试或切换来源'],'fw.confirm_online':['Install this signed update and restart the device?','安装此签名更新并重启设备？'],
 /* Application watchdog diagnostics (A1/M1). */
 'diag.g_watchdog':['Restart & watchdog','复位与看门狗'],
@@ -1081,30 +1082,49 @@ function mqttPage(dev){
 function firmwarePage(dev){
  const online=h('section',{class:'card stack',hidden:!UI.caps?.actions?.includes('ota.sources.get')});
  if(!online.hidden){
-  const source=h('select',{id:'otaSource'}),latest=h('p',{class:'help'}),notes=h('a',{target:'_blank',rel:'noopener',hidden:true},t('fw.notes'));
+  const sources=h('div',{class:'row',id:'otaSources'}),latest=h('p',{class:'help'});
+  const notes=h('button',{class:'btn',type:'button',hidden:true},t('fw.notes'));
+  const notesText=h('pre',{class:'help',hidden:true,style:'white-space:pre-wrap;max-height:24rem;overflow:auto'});
   const install=h('button',{class:'btn primary',type:'button',hidden:true},t('fw.install_online'));
-  const check=h('button',{class:'btn',type:'button'},t('fw.check'));
   let timer=null,last=null;
-  function translate(){check.textContent=t('fw.check');install.textContent=t('fw.install_online');notes.textContent=t('fw.notes');for(const option of source.options)option.textContent=t('fw.source_'+option.value);if(last)latest.textContent=t('fw.check_'+last.state)+(last.version?' · '+last.version:'');}
+  const buttons=[];
+  function busy(value){for(const button of buttons)button.disabled=value;}
+  function translate(){install.textContent=t('fw.install_online');notes.textContent=t('fw.notes');for(const button of buttons)button.textContent=t('fw.source_'+button.dataset.source);if(last)latest.textContent=t('fw.check_'+last.state)+(last.version?' · '+last.version:'');}
   I18N.onChange(translate);
   async function poll(){
    const data=await command('ota.check.get');last=data;
-   latest.textContent=t('fw.check_'+data.state)+(data.version?' · '+data.version:'');
-   install.hidden=!data.available;notes.hidden=!data.release_log;
-   if(data.release_log)notes.href=data.release_log;
-   if(data.state==='checking')timer=setTimeout(()=>poll().catch(e=>{latest.textContent=e.message;check.disabled=false;}),1000);
-   else check.disabled=false;
+   latest.textContent=t('fw.check_'+data.state)+(data.version?' · '+data.version:'')+(data.error?' · '+data.error:'');
+   install.hidden=!data.version||data.state==='failed';notes.hidden=!data.release_log;
+   if(data.busy||data.state==='checking')timer=setTimeout(()=>poll().catch(e=>{latest.textContent=e.message;busy(false);}),1000);
+   else busy(false);
   }
-  check.onclick=()=>run(check,async()=>{if(timer)clearTimeout(timer);install.hidden=true;notes.hidden=true;await command('ota.check',{source:source.value});latest.textContent=t('fw.check_checking');check.disabled=true;timer=setTimeout(()=>poll().catch(e=>{latest.textContent=e.message;check.disabled=false;}),500);});
-  source.onchange=()=>{if(timer)clearTimeout(timer);install.hidden=true;notes.hidden=true;latest.textContent='';check.disabled=false;};
+  async function check(source){
+   if(timer)clearTimeout(timer);busy(true);install.hidden=notes.hidden=notesText.hidden=true;
+   try{await command('ota.check',{source});latest.textContent=t('fw.check_checking');timer=setTimeout(()=>poll().catch(e=>{latest.textContent=e.message;busy(false);}),500);}
+   catch(e){busy(false);throw e;}
+  }
+  notes.onclick=()=>run(notes,async()=>{
+   let offset=0,text='';notesText.hidden=false;
+   do{
+    await command('ota.notes',{offset});
+    let data;
+    do{await new Promise(resolve=>setTimeout(resolve,500));data=await command('ota.notes.get');}while(data.busy);
+    if(data.state!=='ready')throw Error(data.error||t('fw.check_failed'));
+    text+=data.text;notesText.textContent=text;
+    if(data.next<=offset&&data.next<data.total)throw Error(t('fw.check_failed'));
+    offset=data.next;if(offset>=data.total)break;
+   }while(offset<16384);
+  });
   install.onclick=()=>run(install,async()=>{if(!window.confirm(t('fw.confirm_online')))return;await command('ota.install');toast(t('fw.url_started'));});
-  command('ota.sources.get').then(data=>{for(const id of data.sources)source.append(h('option',{value:id},t('fw.source_'+id)));}).catch(()=>{online.hidden=true;});
-  online.append(h('h2',{i18n:'fw.online'}),source,h('div',{class:'row'},check,install),latest,notes);
+  command('ota.sources.get').then(data=>{for(const id of data.sources){const button=h('button',{class:'btn',type:'button','data-source':id},t('fw.source_'+id));button.onclick=()=>run(button,()=>check(id));buttons.push(button);sources.append(button);}}).catch(()=>{online.hidden=true;});
+  online.append(h('h2',{i18n:'fw.online'}),h('p',{class:'help',i18n:'fw.sources_help'}),sources,latest,h('div',{class:'row'},install,notes),notesText);
  }
+ const cancel=h('button',{class:'btn',type:'button',hidden:true,i18n:'fw.cancel'});
+ cancel.onclick=()=>run(cancel,async()=>{await command('ota.cancel');toast(t('fw.cancelling'));});
  const sum=h('div'),prog=h('progress',{max:100,value:0}),state=h('p',{class:'help'});
  const file=h('input',{id:'firmware',type:'file',accept:'.bin,.raw,.signed',required:true});
  const unsigned=switchRow('unsignedRescue','fw.unsigned','fw.unsigned_desc');
- const url=h('input',{id:'otaUrl',type:'url',maxLength:499,required:true,placeholder:'http://…/'+dev.otaName});
+ const url=h('input',{id:'otaUrl',type:'url',maxLength:499,required:true,placeholder:'https://…/'+dev.otaName});
  const fileForm=h('form',{id:'fileForm',class:'stack'},h('label',{class:'field'},h('span',{},t('fw.file',{m:dev.model})),file),
   h('details',{class:'more'},h('summary',{i18n:'common.advanced'}),unsigned),
   h('div',{class:'form-actions'},h('button',{class:'btn primary',type:'submit'},h('span',{i18n:'fw.upload'}))));
@@ -1130,8 +1150,9 @@ function firmwarePage(dev){
  onSubmit(urlForm,()=>api('/ota',{url:url.value}),'fw.url_started');
  const fileLabel=fileForm.querySelector('.field>span');I18N.onChange(()=>{fileLabel.textContent=t('fw.file',{m:dev.model});});
  return {el:h('div',{class:'stack'},pageHead('nav.firmware','fw.lead'),sum,online,
-  card('fw.install',null,picker,h('div',{style:'margin-top:16px'},fileForm,urlForm),h('div',{class:'stack',style:'margin-top:20px'},prog,state),info(dev.otaHintKey))),
+  card('fw.install',null,picker,h('div',{style:'margin-top:16px'},fileForm,urlForm),h('div',{class:'stack',style:'margin-top:20px'},prog,state,cancel),info(dev.otaHintKey))),
   status(s){sum.replaceChildren(summary([['fw.version',h('span',{class:'num'},s.version||'—')],['fw.state',t('s.'+(s.ota_state||'idle'))],s.ota_error?['fw.error',h('span',{class:'badge bad'},s.ota_error)]:null]));
+   cancel.hidden=!s.ota_active||s.ota_mode==='committing';
    if(s.ota_active){prog.value=s.ota_progress;state.textContent=t('fw.progress',{p:s.ota_progress});}}};
 }
 function diagValue(k,v){
@@ -1243,7 +1264,9 @@ function clockCard({load,save,status}){
 let initialized=false,failures=0,lastSuccess=0,loading=null;
 async function load(){
  try{
-  const raw=await command('status.get');failures=0;lastSuccess=Date.now();const s=UI.acceptStatus(raw);
+  const raw=await command('status.get');failures=0;lastSuccess=Date.now();
+  if(raw.ota_active&&raw.ota_mode){UI.pages.firmware?.status(raw);return raw;}
+  const s=UI.acceptStatus(raw);
   $('title').textContent=UI.device.model+' '+(s.name||'');
   renderChips(s);renderBanners(s,false);
   if(!initialized){for(const p of Object.values(UI.pages))if(p.init)p.init(s);initialized=true;}
