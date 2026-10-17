@@ -1,6 +1,6 @@
 {
   "repository": "phicomm-io/phicomm-community-mqtt",
-  "tag": "v2026.10.16.1",
-  "commit": "cf3a8dcbc46c0f9bd34a9947e81f3ea302b9dd29",
-  "frontend_commit": "4b0a0608bdfcce0ac1fda116e6b9c688f5299a47"
+  "tag": "v2026.10.17.2",
+  "commit": "a93b17649fa1b292887c6bd6013d667f901d6742",
+  "frontend_commit": "fb8c05b6f596bb2c08872d36b42251d614b217c5"
 }
