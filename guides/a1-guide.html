@@ -4,9 +4,16 @@
 <p>首页提供电源开关与风机档位控制。</p>
 <ul>
 <li><strong>电源</strong>：开启或关闭净化器。</li>
-<li><strong>风机档位</strong>：手动选择风速。</li>
-<li><strong>自动</strong>：按 M1 的读数与联动规则自动调整。</li>
+<li><strong>手动模式</strong>：按设定风速运行；切回手动时恢复上次手动风速。</li>
+<li><strong>自动模式</strong>：开机后根据 M1 的空气质量读数调速，可选择 PM2.5、甲醛或两者中需求更高的一项。</li>
+<li><strong>模式与电源独立</strong>：关机时可以切换模式，但不会因此开机。关闭电源后，空气变差也不会主动开启。</li>
+<li><strong>滑环与网页滑块</strong>：手动模式调整风速，自动模式调整当前时段的最高风速；操作风速会同时开机。</li>
 </ul>
+<p>在自动调速设置中配置最低、最高及传感器离线风速。最低风速设为 <strong>0%</strong> 时，空气良好可停转待机；电源仍保持开启，空气变差后恢复运行。待机与恢复使用防抖和最短切换间隔，避免频繁停转。</p>
+<p>可选开启 <strong>启停回差</strong>，分别设置目标值和更高的启动阈值。例如 PM2.5 目标为 35、启动阈值为 50：达到 50 后运行，降到 35 后停转待机，35～50 之间保持原状态。刚开机时若读数处于两者之间则待机。所选指标中任一项达到启动阈值即可运行，全部降到目标值才待机。条件需连续满足设定时间，每次启停还受最短运行／待机时间限制。</p>
+<p>运行时继续按所选固定、线性或 PID 算法调速；PID 使用相同目标值。启用回差后，运行时最低为 1%，待机时为 0%，不受最低风速限制。夜间风速上限仍生效；调整风速上限或切换夜间时段会保留启停状态。关闭回差后恢复持续调速逻辑。设备本地网页和 MQTT 远程集中管理平台均可显示模式、运行／待机状态，并修改这些设置。</p>
+<p>固定、线性与 PID 三种调速策略均保留。传感器未绑定、离线或读数过期时，使用设定的离线风速，并限制在当前时段的风速范围内；有效读数恢复后继续自动调速。离线策略不会打开已关闭的电源。</p>
+<p>夜间每个时段可独立设置最低、最高与离线风速，调速算法与白天相同。重叠时段按列表中最后匹配的一项执行；手动模式仍受夜间风速上限约束。时钟尚未同步时使用白天设置。</p>
 <h2 id="滤芯寿命预估">滤芯寿命预估</h2>
 <p>首页显示剩余寿命百分比和累计使用小时。仅在风机有运行输出时累计，待机、停机不计时；手动、定时、夜间和自动联动均适用，各档风速按相同时间计入。</p>
 <p>默认额定寿命为 <strong>4320 小时</strong>，相当于连续运行 180 天。该值是本功能的估算基准，可展开“调整额定寿命”，按所用滤芯规格设置为 1–20000 小时。修改额定寿命不会清除已用时间。常见滤芯的更换周期会随环境和使用方式变化，可参考<a href="https://www.mi.com/global/support/article/KA-06874/">厂商的寿命说明</a>；本功能不检测滤芯堵塞或污染程度，请结合滤芯状况判断。</p>
@@ -14,6 +21,7 @@
 <p>使用时间会保留至下次启动：运行中每累计一小时保存一次，风机停止、正常网页重启或升级前也会保存。突然断电可能丢失最近不足一小时的计时。网络重置保留滤芯计时，恢复出厂设置会清空计时并恢复默认额定寿命。首次升级到此功能时从零开始，无法还原此前滤芯使用时间。</p>
 <h2 id="灯环">灯环</h2>
 <p>灯环呈现空气状态、连接进度和操作反馈。</p>
+<p>选择模式成功后，<strong>自动模式为青色双脉冲，手动模式为暖橙色单脉冲</strong>，约 1.2 秒后恢复原灯效。网页、按键和 Home Assistant 的模式操作均有提示；重复选择同一模式也会确认。关机或关闭业务灯光时仍短暂提示，不会因此启动风机或更改灯光设置；夜间亮度上限仍生效。</p>
 <table>
 <thead>
 <tr>
@@ -47,8 +55,8 @@
 <p>在 A1 中：</p>
 <ol>
 <li>配置 M1 成员（添加已授权的 M1）。</li>
-<li>设置联动开关、阈值、风速策略、防抖与最短切换间隔。</li>
-<li>确认平均读数有效后启用。</li>
+<li>设置自动模式的风速范围、离线风速、调速策略、防抖与最短切换间隔。</li>
+<li>选择自动模式并打开电源。没有可用读数时使用离线风速。</li>
 </ol>
 <p>A1 对已绑定且 15 秒内有效的 M1 数据计算实时算术平均；<strong>没有有效数据时读数为 <code>null</code></strong>。</p>
 <p>A1 发起会话初始化、探测和查询，优先走局域网，失败回退 MQTT。M1 重启后 A1 会周期重新初始化会话，不需要重填令牌。</p>
@@ -56,7 +64,7 @@
 <p>双方需要一起升级。完整绑定步骤见 <a href="mqtt-link.html#a1-与-m1-联动">MQTT 与联动</a>。</p>
 </blockquote>
 <h2 id="按键与恢复">按键与恢复</h2>
-<p>A1 有两个按键：<strong>电源键</strong>和 <strong>Wi-Fi 键</strong>。默认电源键单击切换风机。</p>
+<p>A1 有两个按键：<strong>电源键</strong>和 <strong>Wi-Fi 键</strong>。默认电源键单击切换电源，双击切换自动／手动模式。升级时保留已有自定义双击动作；可在按键设置中重新分配。</p>
 <p>在 <strong>设置 → 自动化 → 按键事件</strong> 中选择电源键、Wi-Fi 键或双键组合，再选择手势与动作。双键组合需要同时触碰两个按键；组合触发后不会再执行本轮单键动作，错开松手也不会触发 Wi-Fi 恢复。</p>
 <p>自定义按键映射支持：</p>
 <ul>
@@ -93,4 +101,14 @@
 </blockquote>
 <p>A1 的 WebUI 也提供完整重置。</p>
 <h2 id="mqtt">MQTT</h2>
-<p>A1 固定使用 <strong>TMCP（v2）</strong> 主题，不提供 Legacy 模式选择。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p></article><div class="guide-pager"><a href="a1-m1-flash.html">上一页<b>刷机：J-Link / Bootloader</b></a><a class="next" href="iotcloud-deploy.html">下一页<b>IotCloud 部署</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>
+<p>A1 固定使用 <strong>TMCP（v2）</strong> 主题，不提供 Legacy 模式选择。Home Assistant 接入与平台配置见 <a href="mqtt-link.html">MQTT 与联动</a>。</p>
+<h2 id="home-assistant-与-homekit-模式">Home Assistant 与 HomeKit 模式</h2>
+<p>Home Assistant 的净化器实体提供 <code>auto</code> 与 <code>manual</code> 模式，网页、机身按键和 HA 切换后会同步状态；关闭电源后仍保留所选模式。HA 的风速操作进入手动模式并设定风速；网页与机身滑环在自动模式下调整上限。</p>
+<p>若 HomeKit 中仍显示为普通风扇，请在已有 HomeKit Bridge 的 <code>entity_config</code> 中将 A1 设置为 <code>air_purifier</code>，实体 ID 换成 HA 中的实际名称：</p>
+<pre><code class="language-yaml">entity_config:
+  fan.your_a1:
+    type: air_purifier
+    linked_pm25_sensor: sensor.your_a1_pm25
+</code></pre>
+<p>PM2.5 关联项可选；未绑定 M1 时可以省略。配置方式参见 <a href="https://www.home-assistant.io/integrations/homekit/">Home Assistant HomeKit Bridge 文档</a>。</p>
+<p>通过 HomeKit Bridge 暴露为空气净化器时，HomeKit 的自动模式对应 HA 的 <code>auto</code>。当前 HA 桥接在选择手动时会发送风速命令，因此会进入手动并应用 HomeKit 显示的风速；这条风速命令在关机时也可能开启电源。若要恢复上次手动风速并保留关机状态，请直接选择 HA 或网页中的手动模式。桥接可能把零风速待机显示为净化中或最低风速，设备的实际待机状态以网页为准。</p></article><div class="guide-pager"><a href="a1-m1-flash.html">上一页<b>刷机：J-Link / Bootloader</b></a><a class="next" href="iotcloud-deploy.html">下一页<b>IotCloud 部署</b></a></div></main></div><footer class="site-footer"><div class="wrap"><div><b>PHICOMM COMMUNITY</b><p style="margin-top:8px">社区维护项目，与原厂无隶属关系。固件、指南及发布说明以对应版本为准。本仓库没有覆盖全部代码的统一许可证。</p></div><div><b>文档</b><ul><li><a href="quick-start.html">快速开始</a></li><li><a href="faq.html">故障排查</a></li><li><a href="build-deps.html">构建依赖</a></li><li><a href="release-log.html">Release Log</a></li></ul></div><div><b>源码</b><ul><li><a href="https://github.com/phicomm-io/phicomm-community-firmware" rel="noopener noreferrer">固件仓库</a></li><li><a href="https://github.com/phicomm-io/phicomm-community-mqtt" rel="noopener noreferrer">管理平台</a></li></ul></div></div></footer><script src="../site.js"></script></body></html>

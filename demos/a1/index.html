@@ -3,9 +3,9 @@
 <head><script>/* Entirely in-memory simulator. Never forwards requests to a real device. */
 (()=>{
 const create=model=>{
- const state={name:'演示设备',model,device_id:{tc1:'aabbccddee01',m1:'aabbccddee02',a1:'aabbccddee03'}[model],version:'演示',ip:'192.0.2.10',ssid:'Demo Wi-Fi',wifi_connected:true,mqtt_connected:true,mqtt_status:'ready',mqtt_host:'demo.invalid',mqtt_user:'demo',mqtt_port:1883,mqtt_topic_mode:'tmcp',mqtt_protocol:'tmcp',brightness_requested:3,brightness:192,red:80,green:200,blue:120,speed:60,percentage:60,applied_speed:60,requested_speed:60,fan_on:true,fan_ready:true,panel_ready:true,light_on:true,sensor_received:true,sensor_valid:true,age_ms:200,temperature:25,humidity:48,formaldehyde:.025,pm25:18,time_synced:true,timezone_minutes:480,ntp_host:'pool.ntp.org',ntp_status:'synced',ntp_synced:true,ota_progress:0,ota_state:'idle',socket_names:['台灯','显示器','音箱','充电器','风扇','备用'],socket_states:[true,true,false,true,false,false],report_seconds:5,powerCoefficientX100:1710,free_memory:48000,uptime_seconds:3600,power_watts:36,energy_kwh:.28,led_enabled:true};
- const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install','ota.notes','ota.notes.get','ota.status.get',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['light_effect.next','light_effect.select','light_always.set','filter.get','filter.set','filter.reset','fan.set','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
- const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[],capacity:model==='a1'?102:68},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{enabled:0,mode:0,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['github','cn','global']},'ota.check.get':{state:'idle',available:false}};
+ const state={name:'演示设备',model,device_id:{tc1:'aabbccddee01',m1:'aabbccddee02',a1:'aabbccddee03'}[model],version:'演示',ip:'192.0.2.10',ssid:'Demo Wi-Fi',wifi_connected:true,mqtt_connected:true,mqtt_status:'ready',mqtt_host:'demo.invalid',mqtt_user:'demo',mqtt_port:1883,mqtt_topic_mode:'tmcp',mqtt_protocol:'tmcp',brightness_requested:3,brightness:192,red:80,green:200,blue:120,speed:60,percentage:60,applied_speed:60,requested_speed:60,fan_on:true,fan_mode:'manual',fan_state:'running',auto_max_speed:100,fan_ready:true,panel_ready:true,light_on:true,sensor_received:true,sensor_valid:true,age_ms:200,temperature:25,humidity:48,formaldehyde:.025,pm25:18,time_synced:true,timezone_minutes:480,ntp_host:'pool.ntp.org',ntp_status:'synced',ntp_synced:true,ota_progress:0,ota_state:'idle',socket_names:['台灯','显示器','音箱','充电器','风扇','备用'],socket_states:[true,true,false,true,false,false],report_seconds:5,powerCoefficientX100:1710,free_memory:48000,uptime_seconds:3600,power_watts:36,energy_kwh:.28,led_enabled:true};
+ const actions=['status.get','capabilities.get','config.get','config.set','logs.get','ota.start','schedules.get','schedules.put','schedules.delete','schedules.enable','night.get','night.set','time.get','time.set','ota.sources.get','ota.check','ota.check.get','ota.install','ota.notes','ota.notes.get','ota.status.get',...(model==='tc1'?['outlet.set','indicator.set','child_lock.set','buttons.get','buttons.set']:model==='m1'?['display.set','binding.get','binding.set','binding.status.get']:['light_effect.next','light_effect.select','light_always.set','filter.get','filter.set','filter.reset','fan.set','fan.mode.set','fan.mode.toggle','light.set','child_lock.set','buttons.get','buttons.set','binding.get','binding.set','binding.status.get','binding.probe','linkage.get','linkage.set','light_effect.get','light_effect.set'])];
+ const fixtures={'night.get':{windows:[],revision:1},'buttons.get':{items:[],capacity:model==='a1'?102:68},'schedules.get':{items:[],capacity:8,count:0,next:0},'time.get':{timezone_minutes:480},'logs.get':{records:[{sequence:1,event:'demo_boot',level:'info',module:'system',uptime_ms:1000}],next:1,latest:1},'power.get':{power_watts:36,energy_kwh:.28,powers:[30,35,36]},'binding.get':{response_ids:[],peers:[],members:[],group:'',revision:1},'binding.status.get':{average:{valid:true,sample_count:1,configured_count:1,temperature:25,humidity:48,pm25:18,formaldehyde:.025},peers:[],members:[],linkage_status:'disabled',clock_valid:true,available:0,automatic_on:false,automatic_speed:0},'linkage.get':{hysteresis_enabled:0,fallback_speed:30,enabled:0,mode:1,metrics:1,on_metrics:1,off_metrics:1,statistic:0,on_enabled:0,off_enabled:0,on_all:0,off_all:1,fixed_speed:60,min_speed:20,max_speed:100,debounce_seconds:15,min_switch_seconds:60,on_pm:50,off_pm:35,on_hcho:.1,off_hcho:.08,target_pm:35,target_hcho:.08,low_pm:35,high_pm:150,low_hcho:.08,high_hcho:.3,kp:20,ki:.02,kd:0,revision:1},'light_effect.get':{effect:0,segments:1,follow_fan:0,quality_pm:35,quality_hcho:.08,segment:[{source:0,display:2,minimum:-10,maximum:50,suitable_low:18,suitable_high:26,colors:[[0,0,255],[0,255,0],[255,0,0]]}],revision:1},'wifi.scan.get':{scanning:false,networks:[{ssid:'Demo Wi-Fi',rssi:-40,security:3}]},'ota.sources.get':{sources:['github','cn','global']},'ota.check.get':{state:'idle',available:false}};
  function command(action,p={}){
   if(model==='a1'&&!state.filter)state.filter={used_seconds:864000,lifetime_hours:4320,remaining_percent:95,replacement_due:false};
   if(model==='a1'&&action.startsWith('filter.')){
@@ -20,7 +20,23 @@ const create=model=>{
   if(action==='config.set'){Object.assign(state,p.values||{});if(p.values?.names)state.socket_names=p.values.names;}
   if(action==='outlet.set'){state.socket_states[p.index]=p.toggle?!state.socket_states[p.index]:!!p.on;}
   if(action==='display.set')state.brightness_requested=Math.round(p.brightness/25);
-  if(action==='fan.set'){if(p.toggle)state.fan_on=!state.fan_on;Object.assign(state,p);state.requested_speed=p.speed??p.percentage??state.requested_speed;state.speed=state.applied_speed=state.requested_speed;}
+  if(action==='fan.mode.set'||action==='fan.mode.toggle'){
+   state.fan_mode=action==='fan.mode.toggle'?(state.fan_mode==='auto'?'manual':'auto'):p.mode;
+   fixtures['linkage.get'].enabled=Number(state.fan_mode==='auto');
+  }
+  if(action==='fan.set'){
+   if(p.mode)state.fan_mode=p.mode;
+   if(p.speed!=null){state.fan_on=p.speed>0;if(p.speed>0){if(state.fan_mode==='auto')state.auto_max_speed=p.speed;else state.requested_speed=p.speed;}}
+   if(p.on!=null)state.fan_on=p.on;
+  }
+  if(action==='linkage.set'){
+   Object.assign(fixtures['linkage.get'],p);state.fan_mode=p.enabled?'auto':'manual';state.auto_max_speed=p.max_speed;
+  }
+  if(action.startsWith('fan.')||action==='linkage.set'){
+   state.speed=state.requested_speed;
+   state.percentage=state.applied_speed=state.fan_on?(state.fan_mode==='auto'?Math.max(fixtures['linkage.get'].min_speed,Math.min(state.auto_max_speed,fixtures['linkage.get'].fallback_speed)):state.requested_speed):0;
+   state.fan_state=state.fan_on?(state.percentage?'running':'idle'):'off';
+  }
   if(action==='light.set'){Object.assign(state,p);if(p.toggle)state.light_on=!state.light_on;}
   if(action==='child_lock.set')state.child_lock=p.toggle?!state.child_lock:!!p.on;
   if(action==='indicator.set')state.led_enabled=p.toggle?!state.led_enabled:!!p.on;
@@ -337,13 +353,15 @@ pre{overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;bac
    </div>
   </div>
   <div class="stack" style="margin-top:20px">
-   <div class="row between"><span class="label" data-i18n="a1.speed"></span><b class="num" id="speedValue">—</b></div>
+   <div class="row between"><span class="label" id="speedLabel" data-i18n="a1.speed"></span><b class="num" id="speedValue">—</b></div>
+   <div id="fanMode" hidden></div>
    <div id="presets"></div>
    <input id="speed" type="range" min="1" max="100" step="1" data-i18n-aria="a1.speed">
    <div>
     <div class="bar"><i id="outBar" style="width:0"></i><i id="targetBar" class="target" style="width:0"></i></div>
     <p class="help" id="outText" style="margin-top:6px"></p>
    </div>
+   <a id="autoSettings" class="btn" href="#settings/linkage" data-i18n="nav.linkage"></a>
    <details class="info"><summary><span data-i18n="common.more_info"></span></summary><p data-i18n="a1.fan_hint"></p></details>
   </div>
  </section>
@@ -410,6 +428,25 @@ pre{overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;bac
 (()=>{
 'use strict';
 const D={
+'auto.mode':['Operating mode','运行模式'],'auto.auto':['Auto','自动'],'auto.manual':['Manual','手动'],
+'auto.toggle':['Toggle auto/manual','切换自动／手动模式'],'auto.idle':['Idle','待机'],
+'auto.minimum':['Minimum speed','最低风速'],'auto.maximum':['Maximum speed','最高风速'],
+'auto.fallback':['Sensor offline speed','传感器离线风速'],
+'auto.help':['Adjusts speed while powered on. Switching mode does not turn power on.','开机时按空气质量调速，切换模式不会自动开机。'],
+'auto.mode_help':['Auto adjusts speed; manual restores your last manual speed.','自动模式按空气质量调速；手动模式恢复上次手动风速。'],
+'auto.range_help':['A minimum of 0 allows idle. Offline speed is limited to this range. Night windows override this range. The ring and slider adjust the current maximum in auto mode.','最低风速设为 0 可停转待机。离线风速受上下限约束，夜间时段可单独设置。自动模式下滑环和滑块调整当前时段的风速上限。'],
+ 'auto.hysteresis_title':['Start and idle','启动与待机'],
+'auto.hysteresis':['Enable start/idle hysteresis','启用启停回差'],
+'auto.hysteresis_help':['Starts at the start threshold and idles at the target. Between them, keeps its current state.','达到启动阈值开始运行，降到目标值后停转待机，两者之间保持原运行状态。'],
+'auto.hysteresis_detail':['Start must exceed target. Any selected pollutant can start the fan; all must meet target to idle. The chosen algorithm adjusts speed while running, with at least 1%. Condition duration and minimum interval apply. Offline speed takes over if sensors are unavailable. Switching off prevents restart.','启动阈值必须高于目标值。任一所选指标达到阈值即启动，全部达标后待机。运行时按所选算法调速，最低为 1%。条件持续时间和最短启停间隔同时生效。传感器离线时改用离线风速；手动关机后不主动启动。'],
+'auto.target_pm':['PM2.5 target / idle at','PM2.5 目标值（待机）'],
+'auto.start_pm':['PM2.5 start threshold','PM2.5 启动阈值'],
+'auto.target_hcho':['Formaldehyde target / idle at','甲醛目标值（待机）'],
+'auto.start_hcho':['Formaldehyde start threshold','甲醛启动阈值'],
+'auto.hysteresis_invalid':['Start threshold must be greater than target for each selected pollutant.','所选指标的启动阈值必须高于目标值。'],
+'auto.no_sensor':['No sensor available. The configured offline speed applies while powered on.','暂无可用传感器，开机时使用设定的离线风速。'],
+'auto.low_pm':['PM2.5 at minimum speed','最低风速对应 PM2.5'],'auto.high_pm':['PM2.5 at maximum speed','最高风速对应 PM2.5'],
+'auto.low_hcho':['Formaldehyde at minimum speed','最低风速对应甲醛'],'auto.high_hcho':['Formaldehyde at maximum speed','最高风速对应甲醛'],
 'filter.title':['Estimated filter life','滤芯寿命预估'],
 'filter.hint':['Counts fan running time only. Default: 4320 h (180 days continuously). Adjust to your filter specification; air quality and filter condition also affect replacement.','仅累计风机开启时间，默认 4320 小时（连续运行 180 天）。可按滤芯规格调整；更换时间还需结合空气质量和滤芯状态。'],
 'filter.usage':['Used {used} / {total} h','已用 {used} / {total} 小时'],
@@ -480,7 +517,7 @@ const D={
 'nav.home':['Home','首页'],'nav.settings':['Settings','设置'],
 'grp.network':['Network','网络'],'grp.device':['Device','设备'],'grp.auto':['Automation','自动化'],'grp.system':['System','系统'],
 'nav.wifi':['Wi-Fi','Wi-Fi'],'nav.mqtt':['MQTT / Home Assistant','MQTT / Home Assistant'],'nav.general':['General','通用'],'nav.light':['Light effects','灯效'],
-'nav.binding':['Linked M1','绑定 M1'],'nav.linkage':['Auto control','自动联动'],'nav.schedule':['Schedules','定时任务'],'nav.sleep':['Night mode','夜间模式'],
+'nav.binding':['Linked M1','绑定 M1'],'nav.linkage':['Auto control','自动调速'],'nav.schedule':['Schedules','定时任务'],'nav.sleep':['Night mode','夜间模式'],
 'nav.buttons':['Button events','按键事件'],'nav.permission':['Linkage access','联动许可'],
 'nav.firmware':['Firmware','固件升级'],'nav.diagnostics':['Diagnostics','诊断'],'nav.logs':['Logs','日志'],'nav.maintenance':['Restart & reset','重启与恢复'],
 /* header */
@@ -566,10 +603,10 @@ const D={
 'a1.panel':['Panel','面板'],'a1.panel_ok':['Panel connected','面板通信正常'],'a1.panel_bad':['Panel not responding','面板无响应'],
 'a1.child_lock':['Child lock','童锁'],'a1.child_lock_desc':['Locks power and speed keys on the device','锁定机身电源和调速按键'],'a1.lock_on':['Child lock on','童锁已开启'],'a1.lock_off':['Child lock off','童锁已关闭'],
 'a1.button_hint':['Hold the Wi-Fi key for 2.5 s to open the setup hotspot; this works with child lock on.','长按 Wi-Fi 键 2.5 秒可开启配网热点，童锁期间仍可使用。'],
-'a1.auto':['Auto control','自动联动'],'a1.auto_lead':['Adjusts the fan from linked M1 readings','根据绑定的 M1 读数调节风速'],
+'a1.auto':['Auto control','自动调速'],'a1.auto_lead':['Adjusts the fan from linked M1 readings','根据绑定的 M1 读数调节风速'],
 'a1.auto_empty':['No M1 is linked yet. Link one to run the purifier automatically.','尚未绑定 M1，绑定后可按空气质量自动运行。'],'a1.auto_link':['Link an M1','绑定 M1'],
-'a1.auto_enable':['Turn on auto control','开启自动联动'],'a1.auto_peers':['{n} M1 · {f} reporting','{n} 台 M1 · {f} 台有数据'],
-'a1.auto_failed':['No fresh M1 data. The fan keeps its current state.','暂无有效的 M1 数据，风机保持当前状态。'],'a1.auto_speed':['Auto speed {p}%','自动风速 {p}%'],
+'a1.auto_enable':['Turn on auto control','开启自动调速'],'a1.auto_peers':['{n} M1 · {f} reporting','{n} 台 M1 · {f} 台有数据'],
+'a1.auto_failed':['No fresh M1 data. The configured offline speed applies while powered on.','暂无有效的 M1 数据，开机时使用设定的离线风速。'],'a1.auto_speed':['Auto speed {p}%','自动风速 {p}%'],
 's.link_disabled':['Off','未开启'],'s.link_active':['Active','运行中'],'s.link_sensor_failed':['No data','无数据'],
 'a1.ring':['Light ring','灯环'],'a1.ring_on':['Light ring','启用灯环'],'a1.always_on':['Always on','常亮'],'a1.always_on_desc':['Otherwise it lights for 2 s after each change','否则仅在操作后亮 2 秒'],
 'a1.color':['Colour','颜色'],'a1.brightness':['Brightness','亮度'],'a1.effect_note':['Effect: {e}.','当前灯效：{e}。'],'a1.effect_change':['Change','更改'],
@@ -598,7 +635,7 @@ const D={
 'bind.group_name':['Group name','组名称'],'bind.group_ph':['Empty = standalone','留空为独立设备'],'bind.member_add':['Add member','添加成员'],
 /* A1 linkage */
 'link.lead':['Rules that turn the purifier on, off and set its speed from M1 readings.','根据 M1 读数开关净化器并调节风速的规则。'],
-'link.enable':['Automatic control','自动联动'],'link.enable_desc':['Manual control still works at any time','随时仍可手动控制'],
+'link.enable':['Automatic control','自动调速'],'link.enable_desc':['Manual control still works at any time','随时仍可手动控制'],
 'link.no_peer':['Link an M1 first.','请先绑定 M1。'],'link.speed':['Fan speed','风速调节'],'link.metric':['Based on','依据指标'],'link.both':['Both','两者'],
 'link.mode.0':['Fixed','固定风速'],'link.mode.1':['Proportional','线性调节'],'link.mode.2':['Target (PID)','目标值（PID）'],
 'link.mode_desc.0':['Always the same speed','始终同一风速'],'link.mode_desc.1':['Faster as air gets worse','空气越差风速越高'],'link.mode_desc.2':['Hold a target level','维持在目标值'],
@@ -608,7 +645,7 @@ const D={
 'link.on_rule':['Start automatically','自动开启'],'link.on_desc':['Turn on when air gets worse','空气变差时开启'],'link.off_rule':['Stop automatically','自动关闭'],'link.off_desc':['Turn off when air is clean','空气变好时关闭'],
 'link.watch':['Watch','监测'],'link.any':['Any','任一满足'],'link.all':['All','全部满足'],'link.above':['above','高于'],'link.below':['below','低于'],
 'link.hyst_warn':['The stop level should be lower than the start level.','关闭阈值应低于启动阈值。'],
-'link.statistic':['With several M1','多台 M1 时取'],'link.debounce':['Condition must last','条件持续'],'link.min_switch':['Minimum time between on/off','最短开关间隔'],
+'link.statistic':['With several M1','多台 M1 时取'],'link.debounce':['Condition must last','条件持续'],'link.min_switch':['Minimum run/idle time','最短运行／待机时间'],
 'link.stat.0':['Average','平均值'],'link.stat.1':['Highest','最高值'],'link.stat.2':['Lowest','最低值'],'link.stat.3':['Median (more than 3)','中位数（多于 3 台）'],'link.stat.4':['Average without extremes','去掉最高最低后平均'],'link.stat.5':['First available in list','按列表顺序故障切换'],
 /* Schedules / night */
 'sch.lead_a1':['Turn the purifier on or off at set times.','在设定时间开启或关闭净化器。'],'sch.lead_tc1':['Switch sockets at set times (Beijing time).','在设定时间开关插座（北京时间）。'],
@@ -622,7 +659,7 @@ const D={
 'night.add':['New night period','新建夜间时段'],'night.start':['From','开始'],'night.end':['Until','结束'],'night.next_day':['(next day)','（次日）'],
 'night.fan':['Limit fan speed','限制风速'],'night.fan_desc':['Cap the speed during this period','时段内限制最高风速'],'night.fan_max':['Max speed','最高风速'],
 'night.light':['Dim the light ring','调暗灯环'],'night.light_desc':['Cap brightness, 0 turns it off','限制亮度，0 为关闭'],'night.light_max':['Max brightness','亮度上限'],
-'night.block_t':['Don’t auto-start','禁止自动开启'],'night.block_desc':['Auto control cannot turn the purifier on','自动联动不会开启净化器'],
+'night.block_t':['Don’t auto-start','禁止自动开启'],'night.block_desc':['Auto control cannot turn the purifier on','自动调速不会开启净化器'],
 'night.fan_cap':['Fan ≤ {p}%','风速 ≤ {p}%'],'night.light_cap':['Light ≤ {p}%','灯光 ≤ {p}%'],'night.light_off':['Light off','灯光关闭'],'night.block':['No auto-start','禁止自动开启'],'night.add_btn':['Add period','添加'],
 /* M1 */
 'm1.overall':['Air quality','空气质量'],'m1.v_excellent':['Excellent','优'],'m1.v_good':['Good','良好'],'m1.v_fair':['Fair','一般'],'m1.v_poor':['Poor','较差'],
@@ -1364,7 +1401,7 @@ const {h,icon,toast,run,switchRow,seg,daysPicker,presetDays,daysText,hhmm,toMinu
 
 /* Action kinds a schedule or button event can run, keyed by action name. */
 const ACTIONS={
- 'outlet.set':'op.outlet','fan.set':'op.fan','light.set':'op.light',
+ 'fan.mode.set':'auto.mode','fan.mode.toggle':'auto.toggle','outlet.set':'op.outlet','fan.set':'op.fan','light.set':'op.light',
  'child_lock.set':'op.child_lock','indicator.set':'op.indicator',
  'display.set':'op.display','system.reboot':'op.reboot',
  'light_effect.next':'op.effect_next','light_effect.select':'op.effect_select',
@@ -1374,7 +1411,7 @@ const sel=(parent,labelKey,options)=>{const s=h('select',{},options.map(([v,k])=
 
 /* Shared action editor: one control group per supported action. */
 function actionEditor(host,{keys=false}={}){
- const caps=UI.caps||{},available=Object.keys(ACTIONS).filter(a=>(caps.actions||[]).includes(a)&&(keys||!['light_effect.next','light_effect.select','filter.reset'].includes(a)));
+ const caps=UI.caps||{},available=Object.keys(ACTIONS).filter(a=>(caps.actions||[]).includes(a)&&(keys||!['light_effect.next','light_effect.select','filter.reset','fan.mode.toggle'].includes(a)));
  const box=h('div',{class:'stack'}),fields=h('div',{class:'stack'});
  const options=[...(keys?[['none','op.none']]:[]),...available.map(a=>[a,actKey(a)])];
  const pick=keys?sel(host,'btn.action',options):seg(options,v=>draw(v),{full:true});
@@ -1391,6 +1428,7 @@ function actionEditor(host,{keys=false}={}){
    if(params.index!=null)index.value=String(params.index);
    parts.push(()=>index.value==='all'?{}:{index:Number(index.value)});
   }
+  if(a==='fan.mode.set'){const mode=sel(fields,'auto.mode',[['manual','auto.manual'],['auto','auto.auto']]);mode.value=params.mode||'manual';parts.push(()=>({mode:mode.value}));}
   const switchable=['outlet.set','fan.set','light.set','child_lock.set','indicator.set','light_always.set'].includes(a);
   if(switchable){
    const values=keys&&(['outlet.set','fan.set'].includes(a)||caps.model==='a1')?['on','off','toggle']:['on','off'];
@@ -1586,6 +1624,7 @@ function buttonsPage(dev){
 
 /* ---------- Night mode ---------- */
 function nightPage(dev){
+ const modern=UI.caps?.actions?.includes('fan.mode.set');
  const isM1=dev.model==='M1',list=h('div',{class:'stack'});
  let model=[];
  function window(cfg,i){
@@ -1593,11 +1632,13 @@ function nightPage(dev){
   const dim=switchRow(null,isM1?'night.screen':'night.light','night.light_desc');dim.querySelector('input').checked=!!cfg.light;
   const bright={brightness:Math.round(cfg.brightness*100/255)};
   const [bOut,bRange]=slider(bright,'brightness',{min:0,max:100,step:isM1?25:1,fmt:v=>v?v+'%':t('state.off')});
-  const speed={max_speed:cfg.max_speed};
+  const speed={max_speed:cfg.max_speed,min_speed:cfg.min_speed??0,fallback_speed:cfg.fallback_speed??30};
   const [fOut,fRange]=slider(speed,'max_speed',{min:1});
   const fan=switchRow(null,'night.fan','night.fan_desc'),block=switchRow(null,'night.block_t','night.block_desc');
   fan.querySelector('input').checked=!!cfg.fan;block.querySelector('input').checked=!!cfg.block_start;
-  const extra=isM1?[]:[fan,h('div',{class:'field'},h('div',{class:'row between'},h('span',{class:'label',i18n:'night.fan_max'}),fOut)),fRange,block];
+  const automatic=[];
+  if(modern)for(const key of ['min_speed','fallback_speed']){const [out,range]=slider(speed,key,{min:0,max:100});automatic.push(h('div',{class:'row between'},h('span',{i18n:key==='min_speed'?'auto.minimum':'auto.fallback'}),out),range);}
+  const extra=isM1?[]:[fan,h('div',{class:'field'},h('div',{class:'row between'},h('span',{class:'label',i18n:'night.fan_max'}),fOut)),fRange,...(modern?automatic:[block])];
   const field=h('fieldset',{},h('legend',{},t('night.period',{n:i+1})),
    h('div',{class:'field'},h('div',{class:'row between'},h('span',{class:'label',i18n:'sch.repeat'}),presetDays(days)),days),
    h('div',{class:'fields'},h('label',{class:'field'},h('span',{i18n:'night.start'}),start),h('label',{class:'field'},h('span',{i18n:'night.end'}),end)),
@@ -1607,7 +1648,7 @@ function nightPage(dev){
   const collect=()=>{
    cfg.days=days.mask();cfg.start=toMinutes(start.value);cfg.end=toMinutes(end.value);
    cfg.light=Number(dim.querySelector('input').checked);cfg.brightness=Math.round(bright.brightness*255/100);
-   if(!isM1){cfg.fan=Number(fan.querySelector('input').checked);cfg.block_start=Number(block.querySelector('input').checked);cfg.max_speed=Number(speed.max_speed);}
+   if(!isM1){cfg.fan=Number(fan.querySelector('input').checked);cfg.block_start=Number(block.querySelector('input').checked);cfg.max_speed=Number(speed.max_speed);if(modern){cfg.min_speed=Number(speed.min_speed);cfg.fallback_speed=Number(speed.fallback_speed);}}
   };
   field.addEventListener('input',collect);field.addEventListener('change',collect);
   return field;
@@ -1617,7 +1658,7 @@ function nightPage(dev){
  }
  const add=h('button',{type:'button',class:'btn'},icon('plus'),h('span',{i18n:'night.add_btn'}));
  add.onclick=()=>run(add,async()=>{if(model.length>=4)throw Error(t('common.max',{n:4}));
-  model.push({days:127,fan:isM1?0:1,light:1,max_speed:30,brightness:0,block_start:1,start:1320,end:420});draw();},null);
+  model.push({days:127,fan:isM1?0:1,light:1,max_speed:30,min_speed:0,fallback_speed:30,brightness:0,block_start:0,start:1320,end:420});draw();},null);
  const save=h('button',{type:'button',class:'btn primary'},h('span',{i18n:'common.save'}));
  save.onclick=()=>run(save,async()=>{await command('night.set',{windows:model});toast(t('common.saved'));});
  return {el:h('div',{class:'stack'},pageHead('nav.sleep','night.lead'),card('night.list',null,list,
@@ -1650,6 +1691,8 @@ const power=$('power');power.append(icon('power'));
 const speed=$('speed');let dragging=false;
 const presets=seg([[20,()=>t('a1.p_quiet')+' 20%'],[40,()=>t('a1.p_low')+' 40%'],[60,()=>t('a1.p_mid')+' 60%'],[100,()=>t('a1.p_max')+' 100%']],v=>setSpeed(v),{full:true});
 $('presets').replaceWith(presets);
+const fanModes=seg([['manual','auto.manual'],['auto','auto.auto']],mode=>run(null,()=>UI.control('fan.mode.set',{mode},{fan_mode:mode}).then(refresh),null),{full:true});
+$('fanMode').append(fanModes);
 function setSpeed(v){speed.value=v;$('speedValue').textContent=v+'%';return run(null,()=>api('/fan/config',{speed:Number(v)}).then(refresh),null);}
 speed.addEventListener('input',()=>{dragging=true;$('speedValue').textContent=speed.value+'%';presets.set(Number(speed.value));});
 speed.addEventListener('change',()=>{dragging=false;setSpeed(speed.value);});
@@ -1659,12 +1702,15 @@ function renderFan(s){
  const locked=s.ota_active||s.reboot_pending||UI.controlBusy;
  power.setAttribute('aria-pressed',String(s.fan_on));power.disabled=locked;speed.disabled=locked;
  presets.querySelectorAll('button').forEach(b=>b.disabled=locked);
- const auto=bindingStatus.linkage_status==='active'&&bindingStatus.automatic_on;
- $('fanState').textContent=s.fan_on?t('a1.running'):t('a1.off');
+ const auto=s.fan_mode==='auto';
+ $('fanMode').hidden=!UI.caps?.actions?.includes('fan.mode.set');fanModes.set(s.fan_mode||'manual');
+ fanModes.querySelectorAll('button').forEach(b=>b.disabled=locked);
+ $('speedLabel').textContent=t(auto?'auto.maximum':'a1.speed');
+ $('fanState').textContent=s.fan_on?t(s.fan_state==='idle'?'auto.idle':'a1.running'):t('a1.off');
  $('fanSub').textContent=locked?t('a1.locked_ota'):s.fan_on?t(auto?'a1.sub_auto':'a1.sub_manual',{p:s.percentage}):t('a1.sub_off',{p:s.requested_speed});
  const previewSpeed=$('previewSpeed');
- if(previewSpeed&&document.activeElement!==previewSpeed){const value=s.fan_on?s.percentage:s.requested_speed;previewSpeed.value=value;$('previewSpeedValue').textContent=value+'%';}
- if(!dragging&&document.activeElement!==speed){const v=s.fan_on?s.percentage:s.requested_speed;speed.value=v;$('speedValue').textContent=v+'%';presets.set(s.fan_on?s.percentage:null);}
+ if(previewSpeed&&document.activeElement!==previewSpeed){const value=auto?s.auto_max_speed:s.requested_speed;previewSpeed.value=value;$('previewSpeedValue').textContent=value+'%';}
+ if(!dragging&&document.activeElement!==speed){const v=auto?s.auto_max_speed:s.requested_speed;speed.value=v;$('speedValue').textContent=v+'%';presets.set(v);}
  $('outBar').style.width=s.applied_speed+'%';$('targetBar').style.width=s.percentage+'%';$('targetBar').hidden=!s.percentage;
  $('outText').textContent=!s.fan_on&&!s.applied_speed?t('a1.out_stopped'):s.applied_speed!==s.percentage?t('a1.out_ramp',{a:s.applied_speed,p:s.percentage}):t('a1.out_steady',{a:s.applied_speed});
  for(const [id,badge] of [['panelBadge',$('panelBadge')],['panelBadge2',$('panelBadge2')]]){badge.className='badge '+(s.panel_ready?'ok':'bad');badge.textContent=t(s.panel_ready?'a1.panel_ok':'a1.panel_bad');}
@@ -1703,7 +1749,7 @@ function renderAuto(){
  const c=$('autoCard'),st=bindingStatus.linkage_status,peers=bindingStatus.peers||[];
  const head=h('div',{class:'card-head'},h('div',{},h('h2',{i18n:'a1.auto'}),h('p',{class:'help',i18n:'a1.auto_lead'})),
   h('span',{class:'badge '+(st==='active'?'ok':st==='sensor_failed'?'warn':'')},t('s.link_'+st)));
- if(!peers.length){c.replaceChildren(head,h('div',{class:'empty'},h('p',{},t('a1.auto_empty')),
+ if(!peers.length){c.replaceChildren(head,h('div',{class:'empty'},h('p',{},t(UI.state?.fan_mode==='auto'?'auto.no_sensor':'a1.auto_empty')),
   h('a',{class:'btn',href:'#settings/binding',style:'margin-top:12px'},icon('link'),h('span',{},t('a1.auto_link')))));return;}
  const fresh=peers.filter(p=>p.fresh).length;
  const meta=h('p',{class:'help'},t('a1.auto_peers',{n:peers.length,f:fresh})+' · '+peers.map(p=>String(p.transport||'mqtt').toUpperCase()).join('/'));
@@ -1920,49 +1966,48 @@ async function showBinding(){
 
 /* ---------- Settings: automatic control rules ---------- */
 async function showLinkage(){
- bindingStatus=await api('/binding/status').catch(()=>bindingStatus);
- const m=await api('/linkage/config');const page=document.querySelector('[data-settings-page="linkage"]');
- const has=(mask,bit)=>!!(mask&bit);
- const metricSeg=()=>{const s=seg([[1,'PM2.5'],[2,()=>t('m.formaldehyde')],[3,'link.both']],v=>{m.metrics=v;draw();});s.set(m.metrics);return s;};
+ const m=await api('/linkage/config'),page=document.querySelector('[data-settings-page="linkage"]');
+ const modern=UI.caps?.actions?.includes('fan.mode.set');
  const draw=()=>{
-  const modes=h('div',{class:'options',role:'radiogroup'},[0,1,2].map(v=>h('label',{class:'option'},h('input',{type:'radio',name:'mode',value:v,checked:m.mode===v,onchange:()=>{m.mode=v;draw();}}),
-   h('b',{},t('link.mode.'+v)),h('span',{},t('link.mode_desc.'+v)))));
-  let detail;
-  if(m.mode===0){const [o,r]=slider(m,'fixed_speed',{min:1});detail=h('div',{},h('div',{class:'row between'},h('span',{class:'label',i18n:'link.fixed'}),o),r);}
-  else if(m.mode===1)detail=h('div',{class:'stack'},
-   has(m.metrics,1)&&h('div',{class:'sentence'},t('link.lin_pm_a'),num(m,'low_pm',{unit:'µg/m³',step:1}),t('link.lin_b'),num(m,'min_speed',{unit:'%',step:1}),t('link.lin_c'),num(m,'high_pm',{unit:'µg/m³',step:1}),t('link.lin_b'),num(m,'max_speed',{unit:'%',step:1})),
-   has(m.metrics,2)&&h('div',{class:'sentence'},t('link.lin_hcho_a'),num(m,'low_hcho',{unit:'mg/m³',step:.001}),t('link.lin_b'),num(m,'min_speed',{unit:'%',step:1}),t('link.lin_c'),num(m,'high_hcho',{unit:'mg/m³',step:.001}),t('link.lin_b'),num(m,'max_speed',{unit:'%',step:1})));
-  else detail=h('div',{class:'stack'},
-   has(m.metrics,1)&&h('div',{class:'sentence'},t('link.pid_pm'),num(m,'target_pm',{unit:'µg/m³',step:1})),
-   has(m.metrics,2)&&h('div',{class:'sentence'},t('link.pid_hcho'),num(m,'target_hcho',{unit:'mg/m³',step:.001})),
-   h('div',{class:'sentence'},t('link.range'),num(m,'min_speed',{unit:'%',step:1}),'–',num(m,'max_speed',{unit:'%',step:1})),
-   h('details',{class:'more'},h('summary',{i18n:'link.pid_tune'}),h('div',{class:'fields'},['kp','ki','kd'].map(k=>h('label',{class:'field'},h('span',{},k.toUpperCase()),num(m,k,{step:.01}))))));
-  const rule=kind=>{
-   const en=kind+'_enabled',mk=kind+'_metrics',all=kind+'_all',cmp=t(kind==='on'?'link.above':'link.below');
-   const which=seg([[1,'PM2.5'],[2,()=>t('m.formaldehyde')],[3,'link.both']],v=>{m[mk]=v;draw();});which.set(m[mk]);
-   const anyAll=seg([[0,'link.any'],[1,'link.all']],v=>{m[all]=v;});anyAll.set(m[all]);
-   const warn=kind==='off'&&m.on_enabled&&(m.off_pm>=m.on_pm||m.off_hcho>=m.on_hcho)?h('p',{class:'help',style:'color:var(--warn)'},t('link.hyst_warn')):null;
-   const box=h('div',{class:'subcard stack'},flag(m,en,'link.'+kind+'_rule','link.'+kind+'_desc'),
-    h('div',{class:'row'},h('span',{class:'help',i18n:'link.watch'}),which,m[mk]===3?anyAll:null),
-    has(m[mk],1)&&h('div',{class:'sentence'},'PM2.5 '+cmp,num(m,kind+'_pm',{unit:'µg/m³',step:1})),
-    has(m[mk],2)&&h('div',{class:'sentence'},t('m.formaldehyde')+' '+cmp,num(m,kind+'_hcho',{unit:'mg/m³',step:.001})),warn);
-   return box;};
-  const master=flag(m,'enabled','link.enable','link.enable_desc');master.querySelector('input').addEventListener('change',draw);
-  // replaceChildren() stringifies a null child, so assemble the list first.
-  const rows=[pageHead('nav.linkage','link.lead')];
-  if(!(bindingStatus.peers||[]).length)rows.push(h('div',{class:'banner warn'},icon('alert'),
-   h('span',{},t('link.no_peer')+' '),h('a',{href:'#settings/binding'},t('a1.auto_link'))));
-  rows.push(h('section',{class:'card'},master),
-   h('fieldset',{class:'bare',disabled:!m.enabled},
-    h('section',{class:'card stack'},h('h2',{i18n:'link.speed'}),h('div',{class:'row between'},h('span',{class:'label',i18n:'link.metric'}),metricSeg()),modes,detail),
-    h('section',{class:'card stack',style:'margin-top:16px'},h('div',{},h('h2',{i18n:'link.onoff'}),h('p',{class:'help',i18n:'link.onoff_lead'})),rule('on'),rule('off'),
-     h('details',{class:'more'},h('summary',{i18n:'common.advanced'}),
-      h('div',{class:'fields'},
-       h('label',{class:'field'},h('span',{i18n:'link.statistic'}),h('select',{onchange:e=>m.statistic=+e.target.value},[0,1,2,3,4,5].map(v=>h('option',{value:v,selected:m.statistic===v},t('link.stat.'+v))))),
-       h('label',{class:'field'},h('span',{i18n:'link.debounce'}),num(m,'debounce_seconds',{unit:t('unit.s'),min:0})),
-       h('label',{class:'field'},h('span',{i18n:'link.min_switch'}),num(m,'min_switch_seconds',{unit:t('unit.s'),min:0})))))),
-   saveBar(()=>api('/linkage/config',m)));
-  page.replaceChildren(...rows);
+  const choose=seg([[1,'PM2.5'],[2,()=>t('m.formaldehyde')],[3,'link.both']],v=>{m.metrics=v;draw();});choose.set(m.metrics);
+  const modes=seg([[0,'link.mode.0'],[1,'link.mode.1'],[2,'link.mode.2']],v=>{m.mode=v;draw();});modes.set(m.mode);
+  const detail=[],gate=[];
+  const supportsGate=Object.hasOwn(m,'hysteresis_enabled');
+  const field=(key,label,options={})=>h('label',{class:'field'},h('span',{},t(label)),num(m,key,options));
+  if(m.mode===0)detail.push(field('fixed_speed','link.fixed',{min:1,max:100,unit:'%'}));
+  if(m.mode===1){
+   if(m.metrics&1)detail.push(field('low_pm','auto.low_pm',{min:0,unit:'µg/m³'}),field('high_pm','auto.high_pm',{min:0,unit:'µg/m³'}));
+   if(m.metrics&2)detail.push(field('low_hcho','auto.low_hcho',{min:0,step:.001,unit:'mg/m³'}),field('high_hcho','auto.high_hcho',{min:0,step:.001,unit:'mg/m³'}));
+  }
+  if(supportsGate){
+   const toggle=flag(m,'hysteresis_enabled','auto.hysteresis','auto.hysteresis_help');
+   toggle.querySelector('input').addEventListener('change',draw);
+   gate.push(toggle);
+   if(m.hysteresis_enabled){
+    if(m.metrics&1)gate.push(field('target_pm','auto.target_pm',{min:.01,max:5000,unit:'µg/m³'}),field('on_pm','auto.start_pm',{min:0,max:5000,unit:'µg/m³'}));
+    if(m.metrics&2)gate.push(field('target_hcho','auto.target_hcho',{min:.001,max:10,step:.001,unit:'mg/m³'}),field('on_hcho','auto.start_hcho',{min:0,max:10,step:.001,unit:'mg/m³'}));
+    gate.push(info('auto.hysteresis_detail'));
+   }
+  }
+  if(m.mode===2){
+   if(!m.hysteresis_enabled&&(m.metrics&1))detail.push(field('target_pm','link.pid_pm',{min:.01,unit:'µg/m³'}));
+   if(!m.hysteresis_enabled&&(m.metrics&2))detail.push(field('target_hcho','link.pid_hcho',{min:.001,step:.001,unit:'mg/m³'}));
+   detail.push(h('details',{class:'more'},h('summary',{i18n:'link.pid_tune'}),h('div',{class:'fields'},['kp','ki','kd'].map(k=>h('label',{class:'field'},h('span',{},k.toUpperCase()),num(m,k,{min:0,step:.01}))))));
+  }
+  const range=[field('min_speed','auto.minimum',{min:modern?0:1,max:100,unit:'%'}),field('max_speed','auto.maximum',{min:1,max:100,unit:'%'})];
+  if(modern)range.push(field('fallback_speed','auto.fallback',{min:0,max:100,unit:'%'}));
+  page.replaceChildren(pageHead('nav.linkage',modern?'auto.help':'link.lead'),
+   h('section',{class:'card stack'},flag(m,'enabled','link.enable','auto.mode_help'),
+    h('div',{class:'fields'},range),modern?info('auto.range_help'):null),
+   h('section',{class:'card stack'},h('h2',{i18n:'link.speed'}),choose,modes,h('div',{class:'fields'},detail)),
+   supportsGate?h('section',{class:'card stack'},h('h2',{i18n:'auto.hysteresis_title'}),h('div',{class:'fields'},gate)):null,
+   h('section',{class:'card stack'},h('h2',{i18n:'common.advanced'}),
+    h('label',{class:'field'},h('span',{i18n:'link.statistic'}),h('select',{onchange:e=>m.statistic=+e.target.value},[0,1,2,3,4,5].map(v=>h('option',{value:v,selected:m.statistic===v},t('link.stat.'+v))))),
+    h('div',{class:'fields'},field('debounce_seconds','link.debounce',{min:0,max:3600,unit:t('unit.s')}),field('min_switch_seconds','link.min_switch',{min:0,max:3600,unit:t('unit.s')}))),
+   saveBar(()=>{
+    if(m.hysteresis_enabled&&(((m.metrics&1)&&m.on_pm<=m.target_pm)||((m.metrics&2)&&m.on_hcho<=m.target_hcho)))throw new Error(t('auto.hysteresis_invalid'));
+    return api('/linkage/config',m).then(refresh);
+   }));
  };
  draw();
 }
